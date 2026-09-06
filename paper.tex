@@ -1,26 +1,24 @@
-%%%%%%%% ICML 2026 Workshop on AI Forecasting submission %%%%%%%%
-\documentclass{article}
+%%%%%%%% ICTAI 2026 camera-ready (short paper) %%%%%%%%
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
 
-\usepackage{microtype}
-\usepackage{graphicx}
-\usepackage{subcaption}
-\usepackage{booktabs}
-\usepackage{hyperref}
-\newcommand{\theHalgorithm}{\arabic{algorithm}}
-
-\usepackage{icml2026}
-
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{mathtools}
+\usepackage{amsmath,amssymb,amsfonts}
 \usepackage{amsthm}
-\usepackage[capitalize,noabbrev]{cleveref}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{microtype}
 
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usetikzlibrary{positioning}
-\usepgfplotslibrary{statistics}
+
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{hyperref}
+\usepackage[capitalize,noabbrev]{cleveref}
 
 \pgfplotsset{
   every axis/.append style={
@@ -30,595 +28,244 @@
     legend style={font=\scriptsize, draw=none, fill=none, inner sep=1pt},
     legend cell align=left,
   },
-  reasoning/.style={color=blue!70!black, mark options={fill=blue!70!black}},
-  nonreasoning/.style={color=orange!85!black, dashed, mark options={fill=orange!85!black, solid}},
-  reasoningmark/.style={color=blue!70!black, mark=*, mark size=2pt},
-  nonreasoningmark/.style={color=orange!85!black, mark=square*, mark size=2pt},
 }
 
 \input{figures/data.tex}
 
 \theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{proposition}[theorem]{Proposition}
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-
-\icmltitlerunning{Prior Calibration Confounds Dose-Response Evaluation}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
 
 \begin{document}
 
-\twocolumn[
-  \icmltitle{Prior Calibration Confounds Dose-Response Evaluation of\\
-             LLM Forecasters}
+\title{Update Slope Is Bounded by Prior Calibration:\\
+       A Structural Bound and Its Contingent Empirical Signature}
 
-  \icmlsetsymbol{equal}{*}
+%% CAMERA-READY TODO: replace with final author block before upload.
+\author{\IEEEauthorblockN{Anonymous Authors}
+\IEEEauthorblockA{\textit{Anonymous Institution}\\
+Anonymous City, Anonymous Country\\
+anon@anon.invalid}}
 
-  \begin{icmlauthorlist}
-    \icmlauthor{Anonymous Authors}{anon}
-  \end{icmlauthorlist}
-  \icmlaffiliation{anon}{Anonymous Institution}
-  \icmlcorrespondingauthor{Anonymous Authors}{anon@anon.invalid}
-
-  \icmlkeywords{forecasting, calibration, large language models, dose-response,
-                evaluation, variance decomposition}
-
-  \vskip 0.3in
-]
-
-\printAffiliationsAndNotice{}
+\maketitle
 
 \begin{abstract}
-  Dose-response evaluation, in which graded amounts of evidence are
-  shown to a forecaster to see how its probability moves, is a natural
-  test of whether an LLM forecaster reasons from new information. On $\nQuestions$ resolved binary
-  questions across $\nModels$ frontier LLMs (3{,}360 elicitations), we
-  show that this evaluation does not work in its natural form: per-model
-  update slope is mechanically bounded by prior calibration
-  (\cref{prop:bound}), so slope rankings cannot be read as skill
-  rankings without prior control. Against a Manifold human-crowd anchor
-  on the same questions, LLMs close only $\manifoldMargPct$\% of the gap
-  between their own prior and the late-trading human consensus
-  (CI [$\manifoldMargLo$, $\manifoldMargHi$], $\manifoldMargN$ pairs).
-  Independently, a crossed random-effects decomposition attributes
-  $\creFracQuestionPct$\% of per-(model, question) Brier@L3 variance to
-  question identity versus $\creFracModelPct$\% to model identity
-  ($\creRatioQM{:}1$). We introduce
-  $\mathrm{DRR}^{\mathrm{Res}}$, the prior-controlled per-model
-  resolution gain, as the right axis on which to compare LLM updating
-  skill; honest dose-response evaluation requires prior control, human
-  anchors, and question stratification.
+A growing evaluation practice scores LLM forecasters by their \emph{update slope}: how much the forecast improves as successively richer evidence is supplied. We show that this practice inherits a classical change-score problem and adds a new one. Structurally, the slope has a prior-dependent ceiling, $\beta_{m,q} \le K_L(1-a_{m,q,0})$ with $K_3 = 0.4$ for the standard four-rung ladder, so a worse-calibrated prior leaves more room to move; whether this ceiling manifests as an empirical slope--prior coupling is contingent and must be diagnosed, not inferred from the bound. Decomposing observed slopes as $\bar\beta_m = K_3\,u_m\,H_m$ (headroom $H_m$ times utilization $u_m$) explains the observed coupling on our Manifold panel, and classical diagnostics (Oldham; Blomqvist) attribute it to baseline coupling rather than measurement error. Empirically, our primary experiments use resolution-blinded evidence ladders, and the comparison against an earlier outcome-aware construction yields a second warning: outcome-aware evidence construction inflates aggregate slopes roughly fourfold (panel utilization $\uMean$ vs.\ $\uMeanBlind$), a leakage mode that content audits of hindsight markers do not detect. The paper's core inferential result survives blinding essentially unchanged: after conditioning on prior calibration, the association between updating and final Brier strengthens from $\crBlindNaiveBeta$ to $\crBlindCtrlBeta$ on blinded data ($\crOrigNaiveBeta$ to $\crOrigCtrlBeta$ on outcome-aware data). Across three question pools, question identity dominates model identity in variance decompositions, and prior-conditioned metrics such as $\mathrm{DRR}^{\rho}$ are promising, though exploratory at panel size seven. The prescriptions are to construct evidence blind to outcomes, condition on the prior, and report headroom utilization alongside raw slopes.
 \end{abstract}
+
+\begin{IEEEkeywords}
+forecasting, calibration, large language models, dose-response evaluation, change scores
+\end{IEEEkeywords}
 
 \section{Introduction}
 
-The recent literature on AI forecasting has converged on two empirical
-claims: (i)~ensembles of frontier LLMs match the human crowd on
-contemporary benchmarks
-\citep{halawi2024approaching,schoenegger2024wisdom}, with some
-agentic systems reaching superforecaster parity
-\citep{alur2025aia}, though expert forecasters still outperform top
-LLMs on rigorous benchmarks \citep{karger2024forecastbench}; and
-(ii)~the evaluation methodology underpinning these claims is fragile,
-with simulated-ignorance prompts \citep{li2026simulated}, retrieval
-contamination, and benchmark gaming \citep{paleka2025pitfalls}
-all undermining post-hoc Brier comparisons.
+Recent work evaluates LLM forecasters not only by static accuracy \citep{halawi2024approaching,karger2024forecastbench,schoenegger2024wisdom,alur2025aia} but by how forecasts \emph{change} as evidence accumulates \citep{yuan2025assessing}. The natural instrument is an \emph{evidence ladder}: each resolved binary question is presented at increasing context levels, from no context (L0) to a full briefing (L3), and the slope of the truth-aligned forecast against ladder level measures responsiveness to evidence. The natural temptation is to rank models by that slope.
 
-We propose a third axis: rather than asking how well an LLM
-\emph{predicts}, ask how its forecast \emph{changes} when given graded
-evidence. We operationalise this with a four-level \emph{evidence ladder}
-per question and elicit forecasts from a panel of $\nModels$ reasoning
-and non-reasoning frontier LLMs. This paper makes one argument with
-three supports: \textbf{the natural form of dose-response evaluation
-does not work; a properly-anchored version produces a sharp negative
-result on LLM updating skill; and after both fixes, model identity
-explains a tiny fraction of the remaining variance.}
+This paper argues that raw update slope is unreliable for two independent reasons, one structural and one methodological, and that both are instances of problems with long histories outside LLM evaluation.
 
-\paragraph{Support 1 (structural; \cref{prop:bound}):}
-Per-question slope $\beta_{m,q}$ is mechanically bounded by a function
-of the prior calibration $a_{m,q,0}$: under monotone ladder
-trajectories, $\beta_{m,q} \leq K_L (1 - a_{m,q,0})$ with $K_L$
-depending only on the number of rungs (\cref{prop:bound}). Since
-truth-aligned $\mathrm{Brier@L0} = (1 - a_{m,q,0})^2$, the bound is
-equivalently $\beta_{m,q} \leq K_L \sqrt{\mathrm{Brier@L0}}$, forcing a
-positive coupling between slope and prior miscalibration regardless of
-model skill. Empirically the OLS coefficient of $\bar\beta_m$ on
-$\sqrt{\mathrm{Brier@L0}}$ is $\drrCoef$, consistent with the bound.
-Naive slope-skill correlations are therefore unidentifiable at the
-cross-model panel sizes typical of forecasting evaluations.
+First, the slope is a \emph{change score}, and correlating change with its own baseline is a classical trap: mathematical coupling and regression to the mean can manufacture baseline--change associations without any underlying behavioral difference \citep{oldham1962note,blomqvist1977relation,tu2007revisiting}. In our setting the trap has a sharp finite-range form: because truth-aligned forecasts live in $[0,1]$, the ordinary-least-squares slope obeys a prior-dependent ceiling (\cref{prop:bound}). Crucially, the ceiling licenses only a \emph{feasible region}. Whether observed slopes actually correlate with prior calibration depends on how models use their available headroom, which is an empirical property of a particular panel on a particular pool; on our data it varies in sign across pools.
 
-\paragraph{Support 2 (Manifold anchor):}
-Both the total-vs-total ratio
-$(a_{m,q,3} - a_{m,q,0})/(P_{\text{late}} - P_{\text{early}})$
-and the marginal-from-prior ratio
-$(a_{m,q,3} - a_{m,q,0})/(P_{\text{late}} - a_{m,q,0})$
-yield a median capture of $\sim$$\manifoldMargPct$\%, with bootstrap
-95\% CIs bounded well away from 1.0. The agreement between metrics
-addresses the natural concern that the total ratio conflates LLM
-prior-knowledge with conservative updating: removing prior-knowledge
-from the denominator does not change the headline.
+Second, the evidence ladder itself can leak. If the ladder builder knows the resolution outcome, it can select and strengthen evidence toward the correct side without ever stating it, inflating measured slopes in a way that audits of explicit hindsight markers do not detect. Our primary experiments therefore use \emph{resolution-blinded} ladders, and the paired comparison against an earlier outcome-aware construction quantifies the inflation directly: aggregate panel movement from L0 to L3 drops from $+0.166$ to $+0.047$ when the builder cannot see the outcome, with per-model headroom utilization falling from $\uMean$ to $\uMeanBlind$ on the same models and questions.
 
-\paragraph{Support 3 (variance bottleneck):}
-A crossed random-effects decomposition of per-(model, question)
-Brier@L3 attributes $\creFracQuestionPct$\% of variance to question
-identity versus $\creFracModelPct$\% to model identity (point-estimate
-ratio $\creRatioQM{:}1$); leave-one-model-out stays in
-[$\looFracQMin$\%, $\looFracQMax$\%]. Question-mix dominates model
-choice. This extends the finding of \citet{murphy2026agentic} that question
-variability accounts for the majority of variance in forecaster
-performance.
+What survives both corrections is the paper's core inferential result: conditioning on prior calibration materially changes conclusions about updating skill. On blinded data, the association between an $a_3$-independent update measure and final Brier strengthens roughly threefold once Brier@L0 is controlled, replicating the outcome-aware result almost exactly.
 
-\paragraph{Methodological contribution.}
-We propose $\mathrm{DRR}_m^{\mathrm{Res}} = \Delta\mathrm{Resolution}_m
-- \widehat{\Delta\mathrm{Resolution}_m \mid \sqrt{\mathrm{Brier@L0}}}$,
-the residual of the Murphy resolution gain on the prior, as a
-prior-controlled axis for comparing LLM updating skill. Naive slope is
-uninformative as a leaderboard metric ($\tau$ with Brier@L3
-$= \rankTauBrierlThreeVsslope$, n.s.); $\mathrm{DRR}^{\mathrm{Res}}$
-correlates strongly with skill ($\tau = \rankTauBrierlThreeVsdrrres$,
-$p < 0.05$) while flipping three model pairs (\cref{tab:drr}). It
-isolates the updating contribution to skill that Brier@L3 conflates
-with prior accuracy.
+Concretely, this paper contributes:
+\begin{itemize}
+  \item A tight structural bound on update slope in terms of prior miscalibration (\cref{prop:bound}), presented as a feasible-region result, together with a headroom-utilization decomposition $\bar\beta_m = K_3\,u_m\,H_m$ that separates what the theorem guarantees from what data must establish.
+  \item A diagnosis toolkit adapted from the classical change-score literature: Hake-style normalized gain \citep{hake1998interactive}, Oldham's method \citep{oldham1962note}, and a Blomqvist-style measurement-error correction \citep{blomqvist1977relation}, applied to LLM dose-response evaluation.
+  \item A blinded-ladder experimental design whose paired comparison with outcome-aware construction quantifies construction leakage (roughly $4\times$ slope inflation) while showing the prior-controlled hierarchical result is robust to it.
+  \item A cross-pool contingency map (Manifold, ForecastBench, ACLED): the algebraic bound and question-variance dominance replicate everywhere, while the slope--prior coupling varies in sign, motivating the prescription to condition on the prior and report utilization rather than raw slope.
+\end{itemize}
 
 \section{Related Work}
 
-\paragraph{LLM forecasting.}
-\citet{halawi2024approaching} introduced the dominant retrieval-augmented
-pipeline; subsequent work hardened evaluation
-\citep{karger2024forecastbench,paleka2025pitfalls},
-explored ensembling \citep{schoenegger2024wisdom},
-self-improvement via outcome-driven DPO \citep{turtel2025teach},
-agentic supervision \citep{alur2025aia}, and decomposed evaluation pipelines
-\citep{yang2025prophet}. Most of this literature reports \emph{static}
-accuracy at a single time point.
+\paragraph{LLM forecasting and updating}
+Retrieval-augmented LLM forecasting pipelines \citep{halawi2024approaching} approach crowd performance on contemporary benchmarks \citep{schoenegger2024wisdom,alur2025aia}, while rigorous benchmarks show experts still ahead \citep{karger2024forecastbench} and evaluation itself is fragile to simulated-ignorance prompting, contamination, and gaming \citep{li2026simulated,paleka2025pitfalls}. Closest to us, Yuan et al.~\citep{yuan2025assessing} study how LLM forecasts respond to new information and find conservative, inconsistent updating; we show that the natural follow-on metric, the update slope, is not a stand-alone measure of updating skill.
 
-\paragraph{Calibration under updating.}
-\citet{yuan2025assessing} is the most direct prior study of how LLM
-forecasts respond to new information; it concludes that LLMs update
-conservatively and inconsistently relative to human forecasters. We
-sharpen that observation by replacing heuristic rational references
-with a Manifold human-crowd anchor. We also show that the natural
-follow-on hypothesis, that update slope is a calibration fingerprint,
-fails as a stand-alone measurement.
+\paragraph{Change scores and baseline coupling}
+The statistical core of our critique is old. Correlating change with initial value invites mathematical coupling and regression-to-the-mean artifacts; Oldham proposed testing change against the mean of initial and final values \citep{oldham1962note}, Blomqvist derived corrections for measurement error in the baseline \citep{blomqvist1977relation}, and the issue recurs across clinical and educational measurement \citep{tu2007revisiting}. Hake's normalized gain, change divided by maximum possible change, is the standard headroom-normalized effect size in education research \citep{hake1998interactive} and is, up to the constant $K_L$, our utilization quantity $u_m$. Our contribution is to identify how this classical problem manifests in sequential-evidence LLM evaluation, derive the setting-specific finite-range ceiling, and evaluate prior-conditioned alternatives.
 
-\paragraph{Question-level variance.}
-\citet{murphy2026agentic} reports that question variability accounts
-for the majority (roughly $62\%$) of variance in forecaster
-performance under a mixed-effects analysis on ForecastBench. We replicate the directional finding under a distinct
-crossed random-effects estimator and at greater magnitude
-($\creFracQuestionPct$\% versus $\creFracModelPct$\%, with the
-between-model component near the boundary of identifiability;
-leave-one-model-out bounds the question share to
-[$\looFracQMin$\%, $\looFracQMax$\%]).
+\paragraph{Question-level variance}
+Murphy~\citep{murphy2026agentic} fits a hierarchical model to per-(forecaster, question) Brier scores on ForecastBench and attributes roughly $62\%$ of variance to question random effects. Our crossed random-effects decompositions on three distinct pools are directionally consistent: question identity dominates model identity in every pool we evaluate, though our seven-model panels leave the model component near the boundary of identifiability. Separately, the reliability--resolution--uncertainty partition of the Brier score that we use for metric construction is due to Allan H.\ Murphy \citep{murphy1973vector}.
 
-\section{Method}
+\section{Evidence Ladders and the Prior Bound}
 
-\subsection{The Evidence Ladder}
+\subsection{Blinded Evidence Ladders}
 
-For each resolved binary question $q$ with truth $y_q \in \{0, 1\}$
-we construct a four-level ladder $(c_0, c_1, c_2, c_3)$:
-$c_0$ empty (L0), $c_1$ neutral background (L1),
-$c_2$ a 2--4 sentence factual evidence summary (L2),
-$c_3$ 1--2 paragraphs of corroborating facts + analysis (L3).
-No level states the resolution. Ladders are generated by
-Opus~4.7 at temperature~0; we report a same-family
-robustness ablation in \cref{sec:ablation}.
+For each resolved binary question $q$ with outcome $y_q \in \{0,1\}$ we construct a four-level ladder $(c_0, c_1, c_2, c_3)$: $c_0$ empty (L0), $c_1$ neutral background (L1), $c_2$ a short factual evidence summary (L2), $c_3$ corroborating facts plus analysis (L3). In our \emph{primary} construction the builder LLM receives the question, resolution criteria, and pre-question background but \emph{not} the outcome; no level may state the resolution. As a sensitivity comparison we retain an earlier \emph{outcome-aware} construction in which the builder saw the outcome but was instructed not to state it. A pre-registered content audit of the outcome-aware ladders (hindsight-marker phrases, resolution-era dates, resolution-blind prediction asymmetry) found only $1.67\%$ aggregate incidence of explicit leakage; \cref{sec:leakage} shows why such audits are insufficient. Ladder prompts, texts, and the audit protocol are in the released repository.
 
 \subsection{Elicitation and Slope}
 
-Given a model~$m$, question~$q$, and level~$\ell \in \{0,\ldots,L\}$
-($L{=}3$), we draw $K{=}3$ probability forecasts and report
-$\bar p_{m,q,\ell}$. The \emph{truth-aligned} forecast is
-$a_{m,q,\ell} = \bar p_{m,q,\ell}$ if $y_q = 1$ and
-$1 - \bar p_{m,q,\ell}$ otherwise. The \emph{update slope} is
-the OLS coefficient of $a_{m,q,\ell}$ regressed on $\ell$, and
-$\bar\beta_m$ is its per-model mean.
+Given model $m$, question $q$, and level $\ell \in \{0,\dots,L\}$ with $L=3$, we draw $K=3$ probability forecasts with a fixed prompt and average them. The \emph{truth-aligned} forecast is $a_{m,q,\ell} = \bar p_{m,q,\ell}$ if $y_q=1$ and $1-\bar p_{m,q,\ell}$ otherwise; the \emph{update slope} $\beta_{m,q}$ is the OLS coefficient of $a_{m,q,\ell}$ on $\ell$, and $\bar\beta_m$ its per-model mean. Cells missing a parseable probability at some level still contribute a slope fit on the available levels (at least two) to per-model means; analyses requiring all four levels use complete cells only (\cref{sec:setup}).
 
 \subsection{The Prior Bound}
 
+The intuition is elementary. A truth-aligned trajectory starts at $a_{m,q,0}$ and cannot exceed $1$, so the total room to move is $1-a_{m,q,0}$; a slope is a weighted average of per-step moves, so the most extreme slope consistent with the range constraint is proportional to that room. A model that starts well calibrated \emph{cannot} exhibit a large slope, however skilled its updating.
+
 \begin{proposition}[Slope is bounded by prior miscalibration]
 \label{prop:bound}
-Let $a_{m,q,0}, \ldots, a_{m,q,L} \in [0,1]$ be a \emph{monotone
-non-decreasing} truth-aligned trajectory with $a_{m,q,L} \leq 1$. Set
-$k = \lceil (L+1)/2 \rceil$. Then the OLS slope satisfies
+Let $a_{m,q,0}, \ldots, a_{m,q,L} \in [0,1]$ be a monotone non-decreasing truth-aligned trajectory. Set $k = \lceil (L+1)/2 \rceil$. Then the OLS slope satisfies
 \[
   \beta_{m,q} \;\leq\; K_L\,\bigl(1 - a_{m,q,0}\bigr),
-  \quad K_L = \frac{6\,k\,(L-k+1)}{L(L+1)(L+2)}.
+  \quad K_L = \frac{6\,k\,(L-k+1)}{L(L+1)(L+2)},
 \]
-For $L = 3$ this gives $K_3 = 0.4$. Since
-$\mathrm{Brier@L0}_{m,q} = (1 - a_{m,q,0})^2$, equivalently
-$\beta_{m,q} \leq K_L\,\sqrt{\mathrm{Brier@L0}_{m,q}}$.
+with $K_3 = 0.4$. The bound is tight, achieved by the trajectory that stays at $a_{m,q,0}$ for $\ell < k$ and jumps to $1$ for $\ell \ge k$.
 \end{proposition}
 
 \begin{proof}[Sketch]
-The OLS slope is $\beta = \sum_\ell (\ell - L/2)\,a_\ell /
-\sum_\ell (\ell - L/2)^2$, and the constant term in $a_\ell$
-contributes zero to the numerator. Under monotonicity with $a_0$
-fixed, the numerator is maximised by minimising $a_\ell$ where
-$(\ell - L/2)<0$ and maximising $a_\ell$ where $(\ell - L/2)>0$,
-which yields $a_\ell = a_0$ for $\ell < k$ and $a_\ell = 1$ for
-$\ell \geq k$. Direct computation gives
-$\sum_\ell (\ell - L/2)\,a_\ell = (1-a_0)\,k\,(L-k+1)/2$ and
-$\sum_\ell (\ell - L/2)^2 = L(L+1)(L+2)/12$, yielding the bound.
+The constant term contributes nothing to the OLS numerator $\sum_\ell (\ell - L/2)\,a_\ell$; under monotonicity with $a_0$ fixed the numerator is maximized by the bang-bang trajectory, and direct computation gives the constant. A weak-monotonicity relaxation ($a_{\ell+1} \ge a_\ell - \epsilon$) adds $C_L\epsilon$ with $C_3 = 0.2$; derivations are in the repository.
 \end{proof}
 
-We assume monotonicity because each ladder rung is designed to add
-information; the expected truth-aligned forecast under proper ladder
-construction is non-decreasing in $\ell$. Per-model mean trajectories,
-which are what enter $\bar\beta_m$, are monotone end-to-end for 4 of 7
-models; the three that violate do so by a maximum of $0.022$ at the
-L0$\to$L1 step. All observed $\bar\beta_m$ values lie below $0.13$,
-consistent with the bound at any reasonable prior, and the structural
-coupling between slope and prior calibration that the proposition
-predicts is visible across the panel (\cref{fig:brier-prior}).
-Per-(model, question) trajectories on $K{=}3$ temperature samples are
-noisier (34\% weakly monotone end-to-end, 61\% on $\ell \in \{1,2,3\}$),
-with most violations concentrated at the L0$\to$L1 step.
+We verify monotonicity where the bound is applied: per-model mean trajectories are monotone for four of seven models on the primary panel with maximum violation $0.029$, and all observed $\bar\beta_m$ lie far below their ceilings. At the individual-cell level only $\fracMonoCells\%$ of trajectories are weakly monotone (median dip $\cellEpsMedian$, 90th percentile $\cellEpsPninety$), so we do not invoke the bound cell-wise; the hierarchical analysis of \cref{sec:hier} is a separate empirical diagnostic that does not rely on it.
 
-\textbf{Consequence.} If two models differ only in prior calibration,
-the one with better priors has \emph{less room to move} and therefore
-a mechanically smaller maximum slope. Cross-model correlations of
-$\bar\beta_m$ with any post-evidence skill metric (Brier@L3, log-loss)
-are confounded by Brier@L0. Slope-skill rankings cannot be read off
-without conditioning on the prior; we propose
-$\mathrm{DRR}_m \;=\; \bar\beta_m - \widehat{\bar\beta_m \mid \sqrt{\mathrm{Brier@L0}}}$
-as the right axis.
+\subsection{Headroom Utilization}
+\label{sec:util}
 
-\subsection{Manifold Capture Ratios}
-
-For each question $q$ with Manifold market consensus
-$P_{\text{early}}(q)$ (bet-count-weighted mean post-bet probability in
-the first 20\% of the open-trading window) and $P_{\text{late}}(q)$
-(last 20\%), truth-aligned to $y_q$, we report two ratios per
-(model, question):
-\begin{align*}
-  R_{\text{total}}    &= \tfrac{a_{m,q,3} - a_{m,q,0}}{P_{\text{late}} - P_{\text{early}}},\\
-  R_{\text{marginal}} &= \tfrac{a_{m,q,3} - a_{m,q,0}}{P_{\text{late}} - a_{m,q,0}}.
-\end{align*}
-$R_{\text{marginal}}$ removes the concern that $R_{\text{total}}$
-conflates "the LLM had a better prior than uninformed traders" with
-"the LLM updates conservatively"; it measures how much of the gap
-between the LLM's own prior and the human posterior the ladder
-closes. Both are computed on questions with $|$denominator$| \geq 0.05$.
+The bound motivates a decomposition rather than a prediction. Define headroom $H_m = 1 - \bar a_{m,0}$ and utilization
+\[
+  u_m \;=\; \frac{\bar\beta_m}{K_3\,H_m} \;\in\; [0,1],
+\]
+so that identically $\bar\beta_m = K_3\,u_m\,H_m$. \Cref{prop:bound} guarantees only $u_m \le 1$. A positive cross-model correlation between slope and prior miscalibration arises \emph{if utilization varies little across the panel}, in which case slopes are approximately rescaled headrooms; but utilization stability is an empirical property of a model panel on a question pool, not a consequence of the theorem. This distinction, absent from the submitted version of this work and correctly demanded by a reviewer, organizes the empirical sections below: the bound tells us where slopes may live, the data must tell us where they do.
 
 \section{Experimental Setup}
+\label{sec:setup}
 
-\paragraph{Questions.} $\nQuestions$ resolved binary questions from
-Manifold Markets (volume $\geq 1000$, $\geq 25$ unique bettors,
-substantive descriptions, personal/sports markets excluded by regex),
-resolution dates 2025--2026.
+\paragraph{Questions and models}
+The primary pool is $\nQuestions$ resolved binary Manifold Markets questions (volume $\ge 1000$, $\ge 25$ unique bettors, personal and sports markets excluded), all resolving after the latest training cutoff in the panel; two further pools (ForecastBench: RAND INFER and Metaculus; ACLED templated event counts) are used for cross-pool replication with the outcome-aware protocol. The panel is $\nModels$ frontier LLMs: four reasoning (GPT-5, o3, Claude Opus 4.7, GPT-5 mini) and three non-reasoning (GPT-4o, Claude Sonnet 4.6, Claude Haiku 4.5).
 
-\paragraph{Models.} Four reasoning models (GPT-5, o3, Opus~4.7,
-GPT-5~mini) and three non-reasoning baselines (GPT-4o,
-Sonnet~4.6, Haiku~4.5).
-
-A contamination check (correlation of per-question mean Brier@L0 with
-resolution date) is reported in \cref{app:contamination}; we find no
-signature consistent with simple memorisation.
+\paragraph{Cell accounting}
+Of $280$ model--question cells, $\nCellsOrig$ are complete at all four levels in the outcome-aware run: $\nNullRecords$ elicitations returned no parseable probability, leaving $\nCellsIncomplete$ cells (six each for Sonnet~4.6 and Haiku~4.5, almost all at the no-context L0 or L1 rungs) without a valid sample at some level. The blinded run is complete ($\nCellsBlind$ cells). Hierarchical fits use complete cells; the blinded fit restricted to the $268$ cells common to both runs is reported for direct comparability.
 
 \section{Results}
 
-\subsection{Naive slope-vs-skill is unidentifiable; prior alone is not}
+\subsection{Outcome-Aware Construction Inflates Slopes}
+\label{sec:leakage}
 
 \begin{figure}[t]
   \centering
   \begin{tikzpicture}
     \begin{axis}[
       width=\columnwidth, height=4.4cm,
-      xlabel={Brier @ L0 (prior calibration)},
-      ylabel={Brier @ L3},
-      enlargelimits=0.12,
-      legend style={at={(0.5,-0.32)}, anchor=north, legend columns=3, font=\scriptsize},
+      xlabel={ladder level}, ylabel={mean truth-aligned forecast},
+      xtick={0,1,2,3}, xticklabels={L0,L1,L2,L3},
+      ymin=0.48, ymax=0.72,
+      legend pos=north west,
     ]
-      \addplot+[no marks, dashed, thick, color=black!50] coordinates {\brierLoLthreeFit};
-      \addlegendentry{OLS fit}
-      \brierLoLthreePlots
-      \addlegendimage{reasoningmark}\addlegendentry{Reasoning}
-      \addlegendimage{nonreasoningmark}\addlegendentry{Non-reasoning}
+      \addplot+[reasoning, mark=*, thick] coordinates {\aggCoordsOrig};
+      \addlegendentry{outcome-aware ladder}
+      \addplot+[nonreasoning, mark=square*, thick] coordinates {\aggCoordsBlind};
+      \addlegendentry{blinded ladder}
     \end{axis}
   \end{tikzpicture}
-  \caption{Per-model Brier@L0 vs.\ Brier@L3, with OLS fit overlaid.
-    Bootstrap-95\% CI on Pearson $r$:
-    [$\BootPriorBrierLo$, $\BootPriorBrierHi$] (point estimate
-    $\BootPriorBrierMean$). Prior calibration alone is a strong
-    predictor of post-evidence skill, consistent with \cref{prop:bound}.}
-  \label{fig:brier-prior}
+  \caption{Aggregate dose response under the two ladder constructions (same models and questions). Starting points agree at L0, where no ladder content is shown; the outcome-aware ladder then produces roughly four times the aggregate movement of the blinded ladder.}
+  \label{fig:blind-contrast}
 \end{figure}
 
-The simple slope-vs-Brier@L3 correlation in our panel is
-$r = \BootSlopeBrierMean$ with bootstrap 95\% CI
-[$\BootSlopeBrierLo$, $\BootSlopeBrierHi$], unidentifiable from
-$\nModels$ models. Per-model Brier@L0, in contrast, predicts Brier@L3
-with bootstrap CI bounded away from zero
-($r = \BootPriorBrierMean$,
-CI [$\BootPriorBrierLo$, $\BootPriorBrierHi$];
-\cref{fig:brier-prior}). The structural reason is
-\cref{prop:bound}: slope is mechanically constrained by
-$\sqrt{\mathrm{Brier@L0}}$, with empirical OLS slope on
-$\sqrt{\mathrm{Brier@L0}}$ of $\drrCoef$.
+\begin{table}[t]
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{4.5pt}
+  \caption{Per-model prior, slope, and headroom utilization $u_m = \bar\beta_m / (K_3 H_m)$ under both ladder constructions.}
+  \label{tab:utilization}
+  \begin{tabular}{lccccc}
+    \toprule
+    & & \multicolumn{2}{c}{outcome-aware} & \multicolumn{2}{c}{blinded} \\
+    \cmidrule(lr){3-4}\cmidrule(lr){5-6}
+    Model & $\bar a_{m,0}$ & $\bar\beta_m$ & $u_m$ & $\bar\beta_m$ & $u_m$ \\
+    \midrule
+    \uTableRowsBoth
+    \bottomrule
+  \end{tabular}
+\end{table}
 
-\paragraph{Hierarchical confirmatory test.}
-The full slope $\beta_{m,q}$ shares the $a_{m,q,3}$ term with Brier@L3
-mechanically, so a regression of Brier@L3 on $\beta_{m,q}$ would partly
-recover that identity. We therefore use the \emph{L0$\to$L2 sub-slope}
-$\beta^{02}_{m,q} = (a_{m,q,2} - a_{m,q,0}) / 2$, which is a function
-of $a_0, a_1, a_2$ only and is out-of-sample for $a_3$, in a crossed
-mixed-effects model
-$\mathrm{Brier@L3}_{m,q} = \alpha + \gamma_1\,\beta^{02}_{m,q} +
-\gamma_2\,\mathrm{Brier@L0}_{m,q} + u_m + u_q + \varepsilon$ on
-$n{=}\hierNcells$ cells. Without prior control,
-$\hat\gamma_1 = \hierNaiveSlopeBeta$ (SE $\hierNaiveSlopeSE$, CI
-[$\hierNaiveSlopeLo$, $\hierNaiveSlopeHi$]); after adding
-$\mathrm{Brier@L0}$, $\hat\gamma_1 = \hierCtrlSlopeBeta$
-(SE $\hierCtrlSlopeSE$, CI [$\hierCtrlSlopeLo$, $\hierCtrlSlopeHi$]).
-The coefficient roughly triples in magnitude after the prior is
-controlled, which is the prior-confound signature \cref{prop:bound}
-predicts: sub-slope is positively coupled with prior miscalibration
-(low-prior models have more room to update), so the marginal
-coefficient understates the conditional updating-skill effect.
+\Cref{fig:blind-contrast} and \cref{tab:utilization} present the paired comparison. At L0 the two runs coincide ($\aggOrigLZero$ vs.\ $\aggBlindLZero$ aggregate aligned forecast), as they must, since no ladder content is shown. By L3 the outcome-aware ladder has moved the panel to $\aggOrigLThree$ but the blinded ladder only to $\aggBlindLThree$: roughly $72\%$ of the apparent evidence effect disappears when the builder cannot see the outcome. Panel utilization drops from $\uMean$ (range $[\uMin, \uMax]$) to $\uMeanBlind$ (range $[\uMinBlind, \uMaxBlind]$). All blinded slopes remain positive, so the ladder still adds information, but far less than the outcome-aware construction suggested.
 
-\subsection{Dose-response residual ranks models on updating skill}
+Two readings are consistent with this contrast, and we cannot fully separate them: outcome-aware builders may select and strengthen genuinely outcome-consistent evidence (construction leakage), or blinded builders may simply produce weaker evidence for questions whose decisive facts emerged near resolution. Under either reading the methodological conclusion is the same: aggregate dose-response magnitudes are properties of the ladder construction as much as of the models, content-level audits do not bound the effect (our audit found $1.67\%$ explicit leakage against a fourfold slope difference), and evidence ladders for forecasting evaluation should be built blind to outcomes.
+
+\subsection{Prior Control Changes Inferential Conclusions}
+\label{sec:hier}
+
+Our primary confirmatory analysis runs on the blinded data. Because the full slope shares $a_{m,q,3}$ with Brier@L3, we use the sub-slope $\beta^{02}_{m,q} = (a_{m,q,2} - a_{m,q,0})/2$, which is out-of-sample for $a_3$, in a crossed mixed-effects model
+$\mathrm{Brier@L3} = \alpha + \gamma_1 \beta^{02} + \gamma_2\,\mathrm{Brier@L0} + u_m + u_q + \varepsilon$. The expected sign of $\gamma_1$ is negative: updating toward truth by L2 should predict lower final Brier.
+
+On blinded cells ($n=\nCellsBlind$), the naive coefficient is $\crBlindNaiveBeta$ (CI [$\crBlindNaiveLo$, $\crBlindNaiveHi$]); adding the prior control strengthens it to $\crBlindCtrlBeta$ (CI [$\crBlindCtrlLo$, $\crBlindCtrlHi$]), a roughly threefold increase. The outcome-aware data give nearly identical results ($\crOrigNaiveBeta$ naive, $\crOrigCtrlBeta$ controlled, $n=\nCellsOrig$), and restricting the blinded fit to the $268$ common cells leaves it unchanged ($\crBlindCommonBeta$, CI [$\crBlindCommonLo$, $\crBlindCommonHi$]). The prior-confound correction is therefore robust to the construction leakage of \cref{sec:leakage}: whatever the ladder adds, conditioning on the prior recovers a substantially stronger updating--skill association.
+
+Because $\beta^{02}$ still contains $a_0$, we previously reported an orthogonalized variant as a robustness check; residualizing a predictor on an included control largely reparameterizes the same regression, so we no longer present it as independent evidence. The sharper check uses the L1$\to$L2 update, which contains neither $a_0$ nor $a_3$: controlled for Brier@L0, its coefficient is $\crOrigSlopeTwelveBeta$ (CI [$\crOrigSlopeTwelveLo$, $\crOrigSlopeTwelveHi$]) on outcome-aware data and $\crBlindSlopeTwelveBeta$ (CI [$\crBlindSlopeTwelveLo$, $\crBlindSlopeTwelveHi$]) on blinded data. The association is not an artifact of shared endpoints.
+
+\subsection{Diagnosing the Slope--Prior Coupling}
+\label{sec:mech}
+
+On the outcome-aware Manifold panel, the OLS coefficient of $\bar\beta_m$ on $\sqrt{\mathrm{Brier@L0}}$ is $\couplingSqrtBrier$: worse priors, steeper slopes. \Cref{prop:bound} does not predict this; the bound is far from active (utilization $0.27$--$0.41$). The decomposition of \cref{sec:util} explains it instead. If utilization were constant, the coefficient of slope on headroom would equal $K_3\bar u = \KthreeUMean$; observed utilization is nearly constant (sd $\uSd$, CV $0.16$) with a mild positive utilization--headroom correlation ($\corrUH$), so the headroom coefficient ($\couplingH$) sits above $K_3\bar u$, and the $\sqrt{\mathrm{Brier}}$ coefficient lands close to it. The coupling, in other words, is what approximately constant utilization produces; it is a fact about this panel, not about the theorem, and it need not transfer. On the blinded panel utilization is neither large nor stable (mean $\uMeanBlind$, CV $0.47$, utilization--headroom correlation $\corrUHBlind$), and the coupling arises through that correlation instead; across pools it changes sign entirely (\cref{sec:pools}).
+
+Classical diagnostics agree with this reading, treated as descriptive at $n=\nModels$. The correlation of total change with baseline is $\corrChangeBaseline$; under Oldham's method, change against the mean of endpoints, it collapses to $\corrChangeOldham$, the signature of baseline coupling rather than a substantive association. A Blomqvist-style correction using the $K{=}3$ within-cell samples shows measurement error contributes little (error share $\sigmaRatioPct\%$ of baseline variance; slope $\blomqvistObs$ observed vs.\ $\blomqvistCorr$ corrected), ruling out error-driven regression to the mean.
+
+\subsection{Question Identity Dominates Model Identity}
+
+A crossed random-effects decomposition of per-cell Brier@L3 attributes $\creFracQuestionPct\%$ of variance to question identity and $\creFracModelPct\%$ to model identity on the primary panel, with the question share robust to leave-one-model-out re-estimation ([$\looFracQMin\%$, $\looFracQMax\%$]); the same qualitative dominance holds on all three pools. Because the model component sits near the boundary of identifiability with seven models, we read this as evidence that question composition can strongly influence measured forecasting performance, and that benchmarks should report question-stratified rather than aggregate scores, not as a universal statement about forecasting leaderboards.
+
+\subsection{Prior-Conditioned Metrics}
+\label{sec:metrics}
 
 \begin{table}[t]
   \centering
   \footnotesize
   \setlength{\tabcolsep}{4pt}
-  \begin{tabular}{lcccc}
+  \caption{Kendall $\tau$ between candidate metrics and the Brier@L3 skill ranking (best $=1$ convention; full-precision scores). Descriptive at $n=\nModels$.}
+  \label{tab:alternatives}
+  \begin{tabular}{lcc}
     \toprule
-    Model & R? & Br@L3 & $\bar\beta_m$ & $\mathrm{DRR}^{\mathrm{Res}}_m$ \\
+    Metric & Kendall $\tau$ & $p$ \\
     \midrule
-    \leaderboardRows
+    Raw slope $\bar\beta_m$                & $+\rankTauBrierlThreeVsslope$      & $\rankPBrierlThreeVsslope$ \\
+    Hake normalized gain (utilization)     & $\rankTauHake$                     & $\rankPHake$ \\
+    $\mathrm{DRR}^{\beta}_m$ (slope residual)      & $+\rankTauBrierlThreeVsdrrslope$   & $\rankPBrierlThreeVsdrrslope$ \\
+    Murphy resolution gain                 & $\rankTauMurphyRes$  & $\rankPMurphyRes$ \\
+    $\mathrm{DRR}^{\rho}_m$ (resolution residual)  & $+\rankTauBrierlThreeVsdrrres$     & $\rankPBrierlThreeVsdrrres$ \\
     \bottomrule
   \end{tabular}
-  \caption{Per-model leaderboard, sorted by $\mathrm{DRR}^{\mathrm{Res}}_m$.
-    Raw slope $\bar\beta_m$ rank correlates with Brier@L3 only at
-    Kendall $\tau = \rankTauBrierlThreeVsslope$ (n.s.);
-    $\mathrm{DRR}_m^{\mathrm{Res}}$ at $\tau =
-    \rankTauBrierlThreeVsdrrres$ ($p < 0.05$) while flipping three
-    pairs against raw Brier@L3.}
-  \label{tab:drr}
 \end{table}
 
-\Cref{tab:drr} reports $\mathrm{DRR}^{\mathrm{Res}}$ alongside raw
-slope. With $\nModels$ models the implied ordering is exploratory; the
-point of \cref{tab:drr} is the methodology, not a confirmatory
-ranking. $\mathrm{DRR}^{\mathrm{Res}}$ is the right axis to report
-alongside (or instead of) raw slope when comparing LLM forecasters on
-dose-response benchmarks. Note that the top and bottom of the
-$\mathrm{DRR}^{\mathrm{Res}}$ ranking both include reasoning and
-non-reasoning models, further arguing against treating naive slope as
-a paradigm-level fingerprint.
+Raw slope ranks models against final skill at only $\tau = +\rankTauBrierlThreeVsslope$. Prior-conditioned alternatives do better (\cref{tab:alternatives}): $\mathrm{DRR}^{\rho}_m$, the Murphy resolution gain \citep{murphy1973vector} residualized on $\sqrt{\mathrm{Brier@L0}}$, leads at $\tau = +\rankTauBrierlThreeVsdrrres$, with the un-residualized resolution gain and the Hake-style utilization score in between. With seven models these orderings are exploratory: we present $\mathrm{DRR}^{\rho}$ as a promising prior-conditioned option that performed well on this panel, not as a validated default, and the methodology, diagnose the coupling and condition on the prior where it binds, is the contribution rather than any specific ranking. Rankings use full-precision Brier scores; GPT-4o and Haiku~4.5, which round to the same displayed Brier@L3, differ at full precision ($\brierLThreeGptFourOFull$ vs.\ $\brierLThreeHaikuFull$).
 
-\subsection{LLMs capture $\sim$40\% of the human-crowd update}
+\subsection{Cross-Pool Contingency}
+\label{sec:pools}
 
-We anchor LLM updates against the Manifold human-crowd update on the
-same questions. The aggregate panel mean rises from $\dosesAggLZero$ at
-L0 to $\dosesAggLThree$ at L3. Both ratios agree: $R_{\text{total}}$ median
-$\manifoldTotalMedian$ (CI [$\manifoldTotalLo$, $\manifoldTotalHi$],
-$\manifoldTotalN$ pairs) and $R_{\text{marginal}}$ median
-$\manifoldMargMedian$ (CI [$\manifoldMargLo$, $\manifoldMargHi$],
-$\manifoldMargN$ pairs). The interpretations differ:
-$R_{\text{total}}$ measures the fraction of the human-crowd update
-the LLM reproduces, while $R_{\text{marginal}}$ measures the fraction
-of the gap between the LLM's own prior and the human posterior that
-the ladder closes. \textbf{Both come in at $\sim$$\manifoldMargPct$\%,
-well below 1.0.} The agreement removes the concern that one ratio is
-inflated by LLM prior knowledge that uninformed traders lack; the LLM
-does not match the human-crowd response on evidence on either
-metric.
-
-\begin{figure}[t]
+\begin{table}[t]
   \centering
-  \begin{tikzpicture}
-    \begin{axis}[
-      width=\columnwidth, height=4.4cm,
-      ybar=1pt, bar width=6pt,
-      ymin=0, ymax=1.0,
-      ylabel={Capture ratio},
-      symbolic x coords={5-mini,4o,Opus,Sonnet,Haiku,GPT-5,o3},
-      xtick=data,
-      x tick label style={font=\tiny},
-      enlarge x limits=0.08,
-      legend style={at={(0.5,-0.18)}, anchor=north, legend columns=2, font=\scriptsize},
-    ]
-      \addplot+[fill=blue!50!black, draw=blue!70!black] coordinates {\captureTotalCoords};
-      \addlegendentry{$R_{\text{total}}$}
-      \addplot+[fill=orange!70!black, draw=orange!85!black] coordinates {\captureMargCoords};
-      \addlegendentry{$R_{\text{marginal}}$}
-      \draw[dashed, red, thin] (axis cs:5-mini,1) -- (axis cs:o3,1);
-      \node[font=\tiny, red] at (axis cs:o3,1) [anchor=south east, yshift=1pt] {matches human};
-    \end{axis}
-  \end{tikzpicture}
-  \caption{Per-model median Manifold capture ratios. Dashed red line:
-    ratio of 1.0 (LLM update matches human-crowd update). The two
-    metrics agree directionally; the apples-to-apples concern that
-    $R_{\text{total}}$ conflates better LLM priors with conservative
-    updating is not borne out.}
-  \label{fig:capture}
-\end{figure}
+  \footnotesize
+  \setlength{\tabcolsep}{4pt}
+  \caption{Cross-pool comparison (outcome-aware protocol; $n{=}7$ models, $n_q{=}40$ per pool). The bound and question-variance dominance replicate; the empirical slope--prior coupling does not.}
+  \label{tab:cross-pool}
+  \begin{tabular}{lccc}
+    \toprule
+    & Manifold & ForecastBench & ACLED \\
+    \midrule
+    OLS $\bar\beta_m$ on $\sqrt{\mathrm{Br@L0}}$ & $\couplingSqrtBrier$ & $\primarySlopeOnSqrtBrL$ & $\acledSlopeOnSqrtBrL$ \\
+    $r(\mathrm{Br@L0}, \mathrm{Br@L3})$          & $\manifoldRBrLZeroLThree$ & $\primaryRBrLZeroLThree$ & $\acledRBrLZeroLThree$ \\
+    Question variance share                      & $\manifoldQVarPct\%$ & $\primaryQVarPct\%$ & $\acledQVarPct\%$ \\
+    Model variance share                         & $\manifoldMVarPct\%$ & $\primaryMVarPct\%$ & $\acledMVarPct\%$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
-Per-model capture ratios (\cref{fig:capture}) range from 0.20
-(Opus~4.7) to 0.92 (GPT-5~mini) on $R_{\text{total}}$, and
-0.23 to 0.62 on $R_{\text{marginal}}$. Only GPT-5~mini exceeds 0.6
-on the marginal ratio, the cleaner conservatism measure; six of
-seven models cluster below 0.5.
+Running the identical protocol on two further pools (\cref{tab:cross-pool}), with predictions registered in advance, three findings replicate universally: the algebraic bound holds at every per-model observation, every model updates positively, and question variance dominates. The slope--prior coupling does not replicate: $\couplingSqrtBrier$ on Manifold, $\primarySlopeOnSqrtBrL$ on ForecastBench, $\acledSlopeOnSqrtBrL$ on ACLED. Three of nine pre-registered predictions failed, all in this coupling family. The utilization decomposition offers a post-hoc account consistent with these failures: the coupling requires utilization stability, which no theorem supplies and which evidently varies across pools and constructions; with seven models per pool we cannot rule out sampling variability as a contributor, and we present the pool-level explanations as hypotheses. This is the sense of the title: the bound is structural, its empirical signature contingent.
 
-\subsection{Question identity explains $\creFracQuestionPct$\% of variance}
+\section{Discussion and Limitations}
 
-A crossed random-effects model
-$\mathrm{Brier@L3}_{m,q} = \mu + u_q + v_m + \varepsilon_{m,q}$
-fit on the $\nModels \times \nQuestions$ cells yields
-$\hat\sigma^2_q = \creVarQuestion$,
-$\hat\sigma^2_m = \creVarModel$,
-$\hat\sigma^2_\varepsilon = \creVarResidual$,
-for variance shares of $\creFracQuestionPct$\% (question) and
-$\creFracModelPct$\% (model). The between-model variance component is
-estimable but at the small end of the parameter space; the point
-estimate ratio is $\creRatioQM{:}1$. Leave-one-model-out re-estimation
-bounds the question share to [$\looFracQMin$\%, $\looFracQMax$\%]. We
-take this as evidence that benchmark design, not model selection, is
-the principal lever for the field's measurable progress on
-forecasting.
+Three prescriptions follow. First, \emph{construct evidence ladders blind to outcomes}: outcome-aware construction inflated aggregate dose response roughly fourfold here, and explicit-marker audits could not have detected it. Second, \emph{condition on the prior}: raw slope conflates updating skill with headroom, the classical change-score correction applies, and on both of our Manifold datasets prior control roughly triples the estimated updating--skill association. Third, \emph{report utilization}: $u_m$ makes the headroom adjustment explicit, connects to a mature normalized-gain literature, and travels across pools even when raw couplings do not.
 
-A Murphy decomposition (reliability $-$ resolution $+$ uncertainty,
-five equal-width bins) shows that L0 to L3 increases mean resolution by
-$\brierResGain$ versus reducing reliability by $\brierRelReduction$
-($\Delta_{\text{res}}>|\Delta_{\text{rel}}|$ for six of seven models):
-the ladder's effect on skill is primarily through discrimination, not
-confidence calibration. We use this to motivate $\mathrm{DRR}^{\mathrm{Res}}_m$
-above; the cross-model correlations between L0 and L3 Murphy components
-are exploratory at $n{=}\nModels$ and we make no confirmatory claim
-from them.
-
-\section{Discussion}
-
-\paragraph{What an honest dose-response evaluation looks like.}
-\Cref{prop:bound} forces a redesign: plot $\mathrm{DRR}_m^{\mathrm{Res}}$
-rather than $\bar\beta_m$, anchor "how much did the model update" to a
-measured human-crowd reference, and stratify Brier by question.
-
-\paragraph{The variance-bottleneck consequence.}
-With $\creFracQuestionPct$\% of variance carried by question identity
-and the between-model component at the small end of identifiability,
-percentage-point differences between models on any AI-forecasting
-leaderboard drawn from a different question pool are statistically
-indistinguishable from question-mix noise. The implication is not that
-all LLM forecasters are equivalent in some deep sense, but that the
-\emph{instrument} (a benchmark with a fixed question pool) has lower
-discriminating power than the leaderboard reports imply. Benchmarks
-should report question-stratified Brier rather than aggregate Brier,
-and treat leaderboard movement inside the
-$\sigma_{\text{question}}$ band as null until shown otherwise.
-
-\paragraph{Limitations.}
-\label{sec:limitations}
-First, our panel has $n{=}\nModels$ models and the cross-model
-correlations therefore have wide bootstrap CIs; we report point
-estimates as exploratory and rely on structural arguments and the
-crossed random-effects fit for confirmatory claims. Second, ladders
-were generated by Opus~4.7, which is in the elicitation panel;
-we provide a same-family ablation in \cref{sec:ablation}. Third, the
-question distribution is Manifold-Markets-specific; the prior-confound
-result is structural and should replicate, but the specific numerical
-magnitudes are sample-dependent.
+Limitations. The panel is seven models and forty questions per pool; every cross-model correlation, ranking, and diagnostic in this paper is descriptive at that size, and the model variance components sit near identifiability boundaries. The blinded and outcome-aware ladders differ in the totality of their evidence, so we cannot apportion the slope gap between builder hindsight and genuinely weaker blinded evidence; both readings, however, support blind construction. Cross-pool runs use the outcome-aware protocol only, so the leakage finding is established on Manifold alone. Ladders were built by a single model family, and residual contamination through pre-cutoff public discussion of effectively settled questions cannot be excluded. Code, data, prompts, audit protocols, and all analysis scripts are available in the released repository.
 
 \section{Conclusion}
 
-Slope is a mechanical function of headroom, and headroom is a
-function of prior calibration. The cleaner anchor for "how much did
-the LLM update" is a measured human-crowd update on the same
-questions; against that anchor, LLMs close roughly
-$\manifoldMargPct$\% of the gap between their prior and the human
-posterior (CI [$\manifoldMargLo$, $\manifoldMargHi$]). Between-model
-variance in raw Brier@L3 is dwarfed by question-mix variance; once
-prior calibration is controlled, the prior-controlled updating-skill
-component (\textit{DRR}$^{\mathrm{Res}}$) does discriminate models
-meaningfully, though within a narrow absolute range. Dose-response
-evaluation is useful, but only with prior control, human anchors, and
-question stratification.
+Raw update slope is doubly untrustworthy as a forecasting-evaluation metric: it is bounded by prior miscalibration, so cross-model comparisons partly measure how wrong models started, and it is inflated by outcome-aware evidence construction, a leakage mode invisible to content audits. The structural bound defines the feasible region; utilization behavior, not the theorem, determines whether a slope--prior coupling appears, and it varies across pools and constructions. What is robust is the correction: conditioning on prior calibration substantially strengthens the measured association between updating and final skill, identically under blinded and outcome-aware evidence. Evaluate updating the way the change-score literature learned to long ago: blind the instrument, condition on the baseline, and normalize by the room to move.
 
+\section*{Acknowledgment}
+Generative AI tools were used under the authors' direction during portions of this work. Anthropic Claude was used to assist with experiment execution, data analysis, and drafting and revision of portions of the manuscript. OpenAI ChatGPT was used to assist with drafting and revision of portions of the manuscript. All AI-generated manuscript content was reviewed, edited, and verified by the authors, who take responsibility for the final text and all scientific claims. Evidence ladders were generated and forecasts elicited from the LLMs named in \cref{sec:setup} as experimental subjects.
+
+\bibliographystyle{IEEEtran}
 \bibliography{paper}
-\bibliographystyle{icml2026}
-
-\newpage
-\appendix
-\onecolumn
-\section{Reproducibility}
-\label{app:reproducibility}
-
-Code and data will be released upon publication.
-
-\section{Ladder Construction Protocol}
-\label{app:ladder}
-
-Each ladder is generated at temperature~0 by Opus~4.7 with the
-prompt reproduced verbatim in \cref{app:elicit}. We audit a random 10\%
-sample of ladders for resolution leakage, defined as a factual statement
-that uniquely entails $y_q$. Ladders failing the audit are
-reconstructed.
-
-\section{Elicitation Prompt}
-\label{app:elicit}
-
-\begin{verbatim}
-You are a careful probabilistic forecaster.
-
-QUESTION: {title}
-RESOLUTION CRITERIA: {criteria}
-CONTEXT:
-{context}
-
-Give your forecast as a single
-probability that the question
-resolves YES.
-
-Reply with exactly one line in this
-format and nothing else:
-
-PROBABILITY: 0.XX
-\end{verbatim}
-
-\section{Manifold Anchor: Per-Model Capture Ratios}
-\label{app:per-model-capture}
-
-\begin{table}[h]
-  \centering
-  \begin{tabular}{lccc}
-    \toprule
-    Model & R? & Median $R_{\text{total}}$ & Median $R_{\text{marginal}}$ \\
-    \midrule
-    \manifoldCaptureTableRows
-    \bottomrule
-  \end{tabular}
-  \caption{Per-model median capture ratios (total and marginal).
-    Capture ratios closer to 1 indicate that the LLM internalises a
-    larger fraction of the human-crowd update on the same evidence.}
-  \label{tab:per-model-capture}
-\end{table}
-
-\section{Ladder Same-Family Ablation}
-\label{sec:ablation}
-
-To test whether Opus~4.7's per-question slope is artificially
-inflated when reading Opus-authored ladders, we regenerate
-$\ablationN$ ladders with GPT-5 (a non-Anthropic-family builder) and
-re-elicit Opus~4.7 on the new ladders. Per-question Opus slopes are
-then compared pair-wise.
-
-Opus's mean per-question slope was $\ablationOpusLadder$ on
-Opus-authored ladders versus $\ablationGPTLadder$ on GPT-5-authored
-ladders (mean difference $\ablationDiff$; paired $t$-test
-$p{=}\ablationTP$, Wilcoxon signed-rank $p{=}\ablationWP$). The point
-estimate is in the opposite direction from the contamination
-prediction (Opus is marginally \emph{flatter} on its own ladders, not
-steeper) and is statistically indistinguishable from zero. We take
-this as bounded evidence against same-family contamination at the
-ladder-construction stage; a larger ablation with multiple non-panel
-builders would be stronger.
-
-\section{Random-Effects Decomposition}
-\label{app:variance}
-
-We fit a single crossed random-effects model using
-$\mathtt{statsmodels.mixedlm}$ with $\mathtt{vc\_formula}$ providing a
-crossed Model component on top of a Question random intercept. The
-fit yields
-$\hat\sigma^2_q = \creVarQuestion$,
-$\hat\sigma^2_m = \creVarModel$,
-$\hat\sigma^2_\varepsilon = \creVarResidual$, giving the variance
-shares quoted in §5.4. Leave-one-model-out re-estimation yields
-question-shares ranging from $\looFracQMin$\% to $\looFracQMax$\%
-across the 7 holdouts.
-
-\section{Contamination Check Details}
-\label{app:contamination}
-
-Per-question Pearson correlation of mean Brier@L0 with resolution date
-was $\contamR$ ($p = \contamP$). On a median-resolution-date split,
-the earlier half ($n = \contamNearly$) had mean Brier@L0
-$= \contamEarlyBrier$ versus the later half ($n = \contamNlate$)
-$= \contamLateBrier$. The simplest memorisation prediction (recent
-questions worse-calibrated) is not observed; we make no positive claim
-about contamination beyond the absence of this specific signature.
 
 \end{document}

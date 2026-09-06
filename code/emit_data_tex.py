@@ -491,6 +491,31 @@ def main():
         for tag, key in [("Orig", "orig"), ("Blind", "blind")]:
             for lvl in ["L0", "L3"]:
                 out.append(rf"\def\agg{tag}{lvl.replace('L0','LZero').replace('L3','LThree')}{{{cr['aggregate_aligned'][key][lvl]:.3f}}}")
+            coords = " ".join(f"({i},{cr['aggregate_aligned'][key][l]:.4f})"
+                              for i, l in enumerate(["L0", "L1", "L2", "L3"]))
+            out.append(rf"\def\aggCoords{tag}{{{coords}}}")
+        # Hake normalized gain: Kendall tau against Brier@L3 skill ranking
+        from scipy.stats import kendalltau as _kt
+        hake = {r["model"]: r["hake_gain"] for r in cr["comparators"]["per_model"]}
+        b3f = cr["brier_L3_full_precision"]
+        ms = sorted(hake)
+        t, pv = _kt([hake[m] for m in ms], [-b3f[m] for m in ms])
+        out.append(rf"\def\rankTauHake{{{t:+.3f}}}")
+        out.append(rf"\def\rankPHake{{{pv:.3f}}}")
+        # Murphy resolution gain tau (from results.json brier decomposition)
+        try:
+            _res = json.loads(Path(RESULTS).read_text())
+            bd = _res["robustness"]["brier_decomp"]["summary"]["per_model"]
+            disp_map = {m["model"]: m["res_gain"] for m in bd}
+            common_ms = [m for m in disp_map if m in {r2["api_id"] for r2 in cr["u_table"]}]
+            api_to_disp = {r2["api_id"]: r2["model"] for r2 in cr["u_table"]}
+            xs = [disp_map[m] for m in common_ms]
+            ys = [-b3f[api_to_disp[m]] for m in common_ms]
+            t2, pv2 = _kt(xs, ys)
+            out.append(rf"\def\rankTauMurphyRes{{{t2:+.3f}}}")
+            out.append(rf"\def\rankPMurphyRes{{{pv2:.3f}}}")
+        except Exception as e:
+            print("murphy tau skipped:", e)
         mono = cr["monotonicity"]
         out.append(rf"\def\cellEpsMedian{{{mono['eps_median']:.3f}}}")
         out.append(rf"\def\cellEpsPninety{{{mono['eps_p90']:.3f}}}")
@@ -502,6 +527,17 @@ def main():
         out.append(rf"\def\blomqvistObs{{{comp['slope_change_on_baseline_obs']:+.3f}}}")
         out.append(rf"\def\blomqvistCorr{{{comp['blomqvist_corrected_slope']:+.3f}}}")
         out.append(rf"\def\sigmaRatioPct{{{100*comp['measurement_var_sigma_e2']/comp['baseline_var_S2']:.1f}}}")
+        # Cross-pool comparison macros (data/pool_comparison.json)
+        pc_path = Path(RESULTS).parent / "pool_comparison.json"
+        if pc_path.exists():
+            prefix = {"Manifold": "manifold", "ForecastBench primary": "primary",
+                      "ACLED boundary": "acled"}
+            for pool in json.loads(pc_path.read_text()):
+                pre = prefix.get(pool["pool"], pool["pool"].lower())
+                out.append(rf"\def\{pre}SlopeOnSqrtBrL{{{pool['slope_on_sqrt_brierL0_coef']:+.3f}}}")
+                out.append(rf"\def\{pre}RBrLZeroLThree{{{pool['pearson_r_brierL0_brierL3']:+.2f}}}")
+                out.append(rf"\def\{pre}QVarPct{{{100*pool['frac_question_var']:.0f}}}")
+                out.append(rf"\def\{pre}MVarPct{{{100*pool['frac_model_var']:.1f}}}")
         b3 = cr["brier_L3_full_precision"]
         out.append(rf"\def\brierLThreeGptFourOFull{{{b3['GPT-4o']:.6f}}}")
         out.append(rf"\def\brierLThreeHaikuFull{{{b3['Claude Haiku 4.5']:.6f}}}")
