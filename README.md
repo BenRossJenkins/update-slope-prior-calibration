@@ -1,133 +1,83 @@
-# LLMs Under-Update — ICML 2026 AI Forecasting Workshop submission
+# Update Slope Is Bounded by Prior Calibration
 
-End-to-end pipeline for the dose-response forecasting study.
+Code, data, and analysis for:
+
+> **Update Slope Is Bounded by Prior Calibration: A Structural Bound and Its Contingent Empirical Signature**
+> Ben Jenkins and Mihaela Cardei
+> *38th IEEE International Conference on Tools with Artificial Intelligence (ICTAI), 2026 (short paper).*
+
+The paper studies the *update slope* of LLM forecasters on four-rung evidence ladders and shows (i) outcome-aware evidence construction inflates measured responsiveness roughly fourfold relative to resolution-blinded ladders, and (ii) raw slope carries a prior-dependent structural ceiling, so cross-model comparisons require conditioning on prior calibration.
 
 ## What's here
 
 ```
-paper.tex                  # main 4-page submission (compiles to paper.pdf)
-paper.bib                  # references
-icml2026.{sty,bst}         # workshop template (do not modify)
+paper.tex / paper.bib      # ICTAI 2026 camera-ready source
+figures/data.tex           # numeric macros consumed by paper.tex (fully regenerable)
+PREREGISTRATION.md         # pre-registered predictions (cross-pool study)
 code/
-  config.py                # central configuration
-  fetch_questions.py       # pull resolved binary Qs from Metaculus
-  build_ladder.py          # construct 4-level evidence ladders (uses Claude)
-  elicit.py                # query OpenAI + Anthropic panel, K samples per cell
-  analyze.py               # compute slopes, Brier, correlations, p-values
-  emit_data_tex.py         # write figures/data.tex from results.json
-  run.py                   # orchestrator
-data/                      # populated by the pipeline (json + jsonl)
-figures/data.tex           # macros consumed by paper.tex (overwritten by emit_data_tex)
+  config.py                # central configuration (models, pools, env vars)
+  fetch_questions.py       # pull resolved binary questions (Manifold)
+  fetch_forecastbench.py   # ForecastBench pools
+  build_ladder.py          # outcome-aware evidence ladders (sensitivity arm)
+  build_ladder_blinded.py  # resolution-blinded ladders (PRIMARY construction)
+  elicit.py / elicit_blinded.py    # panel elicitation, K=3 samples per cell
+  analyze.py               # slopes, Brier, correlations (outcome-aware run)
+  hierarchical_clean.py    # crossed mixed-effects fits (sub-slope spec)
+  camera_ready_analysis.py # ALL camera-ready quantities -> data/camera_ready.json
+  compare_pools.py         # cross-pool comparison -> data/pool_comparison.json
+  compare_blinded_ladders.py + RE_ELICITATION_DECISION_RULE.md  # pre-registered leakage audit
+  emit_data_tex.py         # regenerates figures/data.tex from the JSON results
+  run.py                   # orchestrator for the elicitation pipeline
+data/
+  elicitations.jsonl / elicitations_blinded.jsonl   # raw per-sample forecasts (both runs)
+  questions_ladder*.json   # both ladder texts
+  results.json / camera_ready.json / pool_comparison.json / blinded_comparison.json
+  forecastbench/ acled/    # cross-pool inputs and results
 ```
 
-## Quickstart
+Note: `code/hierarchical_blinded.py` is retained for provenance but superseded by
+`camera_ready_analysis.py`. It regressed on the full L0-to-L3 slope, which shares
+the endpoint with Brier@L3 and is not comparable to the paper's L0-to-L2
+sub-slope specification; all hierarchical numbers in the camera-ready come from
+`camera_ready_analysis.py`.
 
-1. **Environment**
+## Reproducing the paper (no API keys needed)
 
-   ```bash
-   cd code
-   python -m venv .venv && source .venv/bin/activate
-   pip install -r requirements.txt
-   export OPENAI_API_KEY=sk-...
-   export ANTHROPIC_API_KEY=sk-ant-...
-   ```
+All raw elicitation data is committed, so every number in the paper regenerates
+without querying any model API:
 
-2. **Run the full pipeline**
+```bash
+python -m venv .venv-arm && .venv-arm/bin/pip install -r requirements-exact.txt
+.venv-arm/bin/python code/camera_ready_analysis.py   # -> data/camera_ready.json
+cd code && ../.venv-arm/bin/python emit_data_tex.py  # -> figures/data.tex
+```
 
-   ```bash
-   python run.py
-   ```
+The regenerated `figures/data.tex` matches the file used to compile the
+camera-ready byte-for-byte. Tested with Python 3.12 on Apple silicon
+(`requirements-exact.txt` is the frozen environment; `code/requirements.txt`
+gives loose ranges). If a `code/.venv` built on x86_64 is present locally, do
+not use it on arm64.
 
-   This executes, in order: `fetch_questions` → `build_ladder` →
-   `elicit` → `analyze` → `plot`. Each stage writes to `data/`. Re-running is
-   incremental: `elicit` skips cells already present in
-   `data/elicitations.jsonl`.
+## Re-running the full pipeline (API keys required)
 
-3. **Compile the paper**
+`code/run.py` re-fetches questions, builds ladders, and re-elicits the panel
+(`OPENAI_API_KEY`, `ANTHROPIC_API_KEY` via environment). Model list and pools
+are in `code/config.py`. Elicitation is stochastic (temperature sampling,
+K=3), so a fresh run reproduces the paper's findings in distribution, not
+byte-for-byte.
 
-   ```bash
-   cd ..
-   pdflatex paper.tex && bibtex paper && pdflatex paper.tex && pdflatex paper.tex
-   ```
+## Citation
 
-   This produces `paper.pdf`. Replace the `[TBD]` markers in `paper.tex`
-   with the numbers printed by `analyze.py` (also stored in
-   `data/results.json`).
+```bibtex
+@inproceedings{jenkins2026slope,
+  author    = {Jenkins, Ben and Cardei, Mihaela},
+  title     = {Update Slope Is Bounded by Prior Calibration: A Structural Bound and Its Contingent Empirical Signature},
+  booktitle = {Proceedings of the 38th IEEE International Conference on Tools with Artificial Intelligence (ICTAI)},
+  year      = {2026}
+}
+```
 
-## Per-stage detail
+## License
 
-### `fetch_questions.py`
-Pulls resolved binary questions from the Metaculus public API filtered to
-`resolve_time >= 2025-01-01`. Configurable via
-`TARGET_N_QUESTIONS` and `RESOLUTION_AFTER` in `config.py`.
-
-### `build_ladder.py`
-Constructs the four-level evidence ladder per question. Uses Claude
-Opus 4.7 at temperature 0; **never** queries any model in the elicitation
-panel for ladder construction (avoids the model grading evidence it itself
-authored). Costs ~1-2 cents per question.
-
-### `elicit.py`
-Queries the model panel concurrently. Default panel:
-
-| API ID | Display | Reasoning |
-|---|---|---|
-| `gpt-5` | GPT-5 | yes |
-| `gpt-5-mini` | GPT-5 mini | yes |
-| `gpt-4o-2024-11-20` | GPT-4o | no |
-| `o3` | o3 | yes |
-| `claude-opus-4-7` | Claude Opus 4.7 | yes |
-| `claude-sonnet-4-6` | Claude Sonnet 4.6 | no |
-| `claude-haiku-4-5-20251001` | Claude Haiku 4.5 | no |
-
-Edit `MODELS` in `config.py` to drop or add models. Cost scales as
-`N_questions × N_models × 4_levels × SAMPLES_PER_CELL`. With defaults
-(40 × 7 × 4 × 3 = 3,360 calls) expect on the order of $200–$500 depending
-on reasoning model usage.
-
-### `analyze.py`
-Computes per-(model, question) update slopes, per-model summaries,
-reasoning-vs-non Mann–Whitney U test, slope-vs-Brier Pearson correlation,
-and writes `data/results.json`.
-
-### `emit_data_tex.py`
-Writes `figures/data.tex` — a single LaTeX file of `\def`-macros that
-`paper.tex` imports via `\input{figures/data.tex}`. All four paper
-figures are authored inline as pgfplots blocks in `paper.tex`; this
-script supplies the data macros (per-level means, per-model curves,
-slope/Brier scatter coords, box-plot stats, top-line numbers,
-per-model table rows). Re-running this script after updating
-`results.json` is enough to refresh every figure and every numerical
-claim in the paper.
-
-## How the paper picks up live data
-
-Every numerical claim and figure in `paper.tex` reads from a macro
-defined in `figures/data.tex` (e.g. `\pearsonR`, `\mannWhitneyP`,
-`\dosesAggCoords`, `\perModelPlots`, `\perModelTableRows`).
-
-After `python run.py`, `emit_data_tex.py` overwrites `figures/data.tex`
-with the fresh values, and re-running `pdflatex` is the only thing
-needed to refresh figures, in-text numbers, and the per-model table.
-
-The repo ships `figures/data.tex` pre-populated with **plausible draft
-numbers** so the paper compiles end-to-end before any experiments are
-run. Those drafts are clearly marked at the top of the file.
-
-## Cost-control flags
-
-- Reduce `SAMPLES_PER_CELL` from 3 to 1 for a single-shot dry run.
-- Reduce `TARGET_N_QUESTIONS` (in `config.py`) to 10 to validate the
-  pipeline end-to-end before paying for the full panel.
-- Drop expensive reasoning models from `MODELS` for a non-reasoning-only
-  baseline.
-
-## Submission checklist
-
-- [ ] Run `python code/run.py` end-to-end (populates `figures/data.tex`)
-- [ ] Recompile: `pdflatex paper && bibtex paper && pdflatex paper && pdflatex paper`
-- [ ] Verify `paper.pdf` main body is ≤ 4 pages (excl. references and appendix)
-- [ ] Spot-check that no draft `figures/data.tex` values remain
-- [ ] Confirm anonymization (no author info, no identifying repo links)
-- [ ] Register abstract on OpenReview by May 11, 2026 23:59 UTC
-- [ ] Upload PDF to OpenReview by May 13, 2026 23:59 UTC
+MIT (see `LICENSE`). Question data derive from public sources (Manifold
+Markets, ForecastBench, ACLED) and retain their original terms.
