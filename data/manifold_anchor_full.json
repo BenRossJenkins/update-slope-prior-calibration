@@ -1,0 +1,242 @@
+{
+  "manifold-i0gxu4hz50xefKXiKCI8": {
+    "p_early": 0.6130449407985937,
+    "p_late": 0.399503206096762,
+    "manifold_update": -0.21354173470183174,
+    "y": 1.0
+  },
+  "manifold-R0gcZ8NR8N": {
+    "p_early": 0.9210025370961707,
+    "p_late": 0.9141891028236848,
+    "manifold_update": -0.00681343427248593,
+    "y": 1.0
+  },
+  "manifold-ysQS6ZAd0q": {
+    "p_early": 0.3441080591015251,
+    "p_late": 0.8856396181291178,
+    "manifold_update": 0.5415315590275928,
+    "y": 1.0
+  },
+  "manifold-uIC5sUz6dR": {
+    "p_early": 0.7454082958056172,
+    "p_late": 0.9022690288802403,
+    "manifold_update": 0.15686073307462312,
+    "y": 1.0
+  },
+  "manifold-pCdqOngC6E": {
+    "p_early": 0.7087799473708862,
+    "p_late": 0.9729695292847133,
+    "manifold_update": 0.264189581913827,
+    "y": 1.0
+  },
+  "manifold-9CynL9OQcn": {
+    "p_early": 0.8016286354556348,
+    "p_late": 0.9494379507680909,
+    "manifold_update": 0.1478093153124561,
+    "y": 1.0
+  },
+  "manifold-ls6EO5N6qP": {
+    "p_early": 0.30807843064872786,
+    "p_late": 0.9828232888024118,
+    "manifold_update": 0.6747448581536839,
+    "y": 1.0
+  },
+  "manifold-ht9QL5L082": {
+    "p_early": 0.43045692930796453,
+    "p_late": 0.8326167658553597,
+    "manifold_update": 0.4021598365473952,
+    "y": 1.0
+  },
+  "manifold-0q0RRPtScc": {
+    "p_early": 0.8117445762088924,
+    "p_late": 0.9568080555400553,
+    "manifold_update": 0.14506347933116293,
+    "y": 1.0
+  },
+  "manifold-Cl8tygc5In": {
+    "p_early": 0.35626410298907807,
+    "p_late": 0.9870118307631589,
+    "manifold_update": 0.6307477277740808,
+    "y": 1.0
+  },
+  "manifold-6hOhzCnt5d": {
+    "p_early": 0.5090637440982623,
+    "p_late": 0.7764251606828623,
+    "manifold_update": 0.2673614165846,
+    "y": 1.0
+  },
+  "manifold-UuKeZO2xvwtE3qMNxMKw": {
+    "p_early": 0.7345667638787216,
+    "p_late": 0.9538519908891806,
+    "manifold_update": 0.21928522701045905,
+    "y": 1.0
+  },
+  "manifold-S9ynE25Uz0": {
+    "p_early": 0.7421028166012087,
+    "p_late": 0.975836743736439,
+    "manifold_update": 0.23373392713523033,
+    "y": 1.0
+  },
+  "manifold-l5ttgczEut": {
+    "p_early": 0.7503240382078494,
+    "p_late": 0.5230350564339127,
+    "manifold_update": -0.22728898177393675,
+    "y": 1.0
+  },
+  "manifold-UIz8PINcCZ": {
+    "p_early": 0.7957281227307638,
+    "p_late": 0.9412727635514292,
+    "manifold_update": 0.14554464082066543,
+    "y": 1.0
+  },
+  "manifold-d6d6zngPcZ": {
+    "p_early": 0.21543740847095044,
+    "p_late": 0.7102348782055681,
+    "manifold_update": 0.49479746973461763,
+    "y": 1.0
+  },
+  "manifold-qgQOAZh6tg": {
+    "p_early": 0.6196276802479965,
+    "p_late": 0.7517974441359577,
+    "manifold_update": 0.1321697638879612,
+    "y": 1.0
+  },
+  "manifold-ANPq9ycqRy": {
+    "p_early": 0.7082443888876243,
+    "p_late": 0.8573696177352222,
+    "manifold_update": 0.14912522884759793,
+    "y": 1.0
+  },
+  "manifold-S9lCRLUNgL": {
+    "p_early": 0.7709369320177358,
+    "p_late": 0.901207847622361,
+    "manifold_update": 0.13027091560462511,
+    "y": 1.0
+  },
+  "manifold-AUL25Ofe9fecD71xnVRw": {
+    "p_early": 0.6055301811595638,
+    "p_late": 0.8560221664370912,
+    "manifold_update": 0.25049198527752736,
+    "y": 1.0
+  },
+  "manifold-ON0QU2RnOz": {
+    "p_early": 0.20098866824895564,
+    "p_late": 0.23761697760743025,
+    "manifold_update": 0.03662830935847461,
+    "y": 0.0
+  },
+  "manifold-uNNEglu2sg": {
+    "p_early": 0.193979836252013,
+    "p_late": 0.015469407033076003,
+    "manifold_update": -0.178510429218937,
+    "y": 0.0
+  },
+  "manifold-yq9hpgsgsU": {
+    "p_early": 0.3657710551849098,
+    "p_late": 0.5105379329787036,
+    "manifold_update": 0.14476687779379382,
+    "y": 0.0
+  },
+  "manifold-yALnECq6z2": {
+    "p_early": 0.48906431761383096,
+    "p_late": 0.11439121015574623,
+    "manifold_update": -0.37467310745808474,
+    "y": 0.0
+  },
+  "manifold-5lCp68nI9Q": {
+    "p_early": 0.5289557592469899,
+    "p_late": 0.43781926425069734,
+    "manifold_update": -0.09113649499629256,
+    "y": 0.0
+  },
+  "manifold-9S9RPEZLdl": {
+    "p_early": 0.3775265666563181,
+    "p_late": 0.05306521590831368,
+    "manifold_update": -0.3244613507480044,
+    "y": 0.0
+  },
+  "manifold-zy0q2pUtpZ": {
+    "p_early": 0.5523494095438507,
+    "p_late": 0.5078004249971693,
+    "manifold_update": -0.044548984546681436,
+    "y": 0.0
+  },
+  "manifold-PttS6gsRp6": {
+    "p_early": 0.522444265308472,
+    "p_late": 0.46488176610157467,
+    "manifold_update": -0.05756249920689732,
+    "y": 0.0
+  },
+  "manifold-rQfPXoWvc55UblJzSXsA": {
+    "p_early": 0.5701021121045041,
+    "p_late": 0.2887215931360925,
+    "manifold_update": -0.2813805189684116,
+    "y": 0.0
+  },
+  "manifold-S8S9OEu5ld": {
+    "p_early": 0.3585397422185608,
+    "p_late": 0.024596592648655637,
+    "manifold_update": -0.3339431495699051,
+    "y": 0.0
+  },
+  "manifold-dnQ6csdCLO": {
+    "p_early": 0.5742492124280325,
+    "p_late": 0.5154381603643524,
+    "manifold_update": -0.05881105206368009,
+    "y": 0.0
+  },
+  "manifold-QClAq8glcq": {
+    "p_early": 0.1687941406184929,
+    "p_late": 0.1860559733804885,
+    "manifold_update": 0.017261832761995582,
+    "y": 0.0
+  },
+  "manifold-56y9Iq5cuS": {
+    "p_early": 0.1926064458883974,
+    "p_late": 0.2620916563404551,
+    "manifold_update": 0.06948521045205772,
+    "y": 0.0
+  },
+  "manifold-p6gPR6NS2Q": {
+    "p_early": 0.3951936849151038,
+    "p_late": 0.19344625824494427,
+    "manifold_update": -0.20174742667015955,
+    "y": 0.0
+  },
+  "manifold-5t2UdCZAAU": {
+    "p_early": 0.40310608281419036,
+    "p_late": 0.2635244464944668,
+    "manifold_update": -0.13958163631972353,
+    "y": 0.0
+  },
+  "manifold-6uUIsAscE8": {
+    "p_early": 0.16860629318473208,
+    "p_late": 0.0382414845617886,
+    "manifold_update": -0.13036480862294347,
+    "y": 0.0
+  },
+  "manifold-8E6duupq0N": {
+    "p_early": 0.11398772001667816,
+    "p_late": 0.014472470858542369,
+    "manifold_update": -0.0995152491581358,
+    "y": 0.0
+  },
+  "manifold-NLPzcQ2Cy9": {
+    "p_early": 0.42558009450223405,
+    "p_late": 0.1977101462398234,
+    "manifold_update": -0.22786994826241067,
+    "y": 0.0
+  },
+  "manifold-IuOpLtLgNU": {
+    "p_early": 0.2881516568259505,
+    "p_late": 0.0639414292607275,
+    "manifold_update": -0.22421022756522302,
+    "y": 0.0
+  },
+  "manifold-6uQmk7jqqcG4gUvPkkTr": {
+    "p_early": 0.2540043268529221,
+    "p_late": 0.08615289972103266,
+    "manifold_update": -0.16785142713188947,
+    "y": 0.0
+  }
+}

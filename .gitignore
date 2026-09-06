@@ -1,0 +1,11 @@
+.venv/
+.venv-arm/
+code/.venv/
+__pycache__/
+*.pyc
+.DS_Store
+texput.log
+*.aux
+*.out
+*.blg
+*.synctex.gz

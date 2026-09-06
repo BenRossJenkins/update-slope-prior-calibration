@@ -1,0 +1,47 @@
+[
+  {
+    "id": "forecastbench-infer-1722",
+    "title": "Will Denis Sassour Nguesso win the 2026 Presidential election in the Republic of the Congo?",
+    "background": "<p>Presidential elections in the Republic of the Congo are scheduled for 15 March 2026 (<a href=\"https://www.africanews.com/2026/01/21/republic-of-congo-presidential-election-set-for-march-15/\">Africa News</a>). Denis Sassou Nguesso, 82, has served as president since 1997 (and previously from 1979 to 1992), making him one of Africa's longest-serving leaders. In late December 2025, the Congolese Labour Party (PCT) formally nominated him as its candidate at its sixth ordinary congress in Brazzaville, framing his candidacy around themes of \"stability\" and \"continuity\" (<a href=\"https://www.france24.com/en/africa/20251230-congo-president-sassou-nguesso-seeks-re-election-in-march-2026\">France 24</a>). A 2015 constitutional referendum removed the presidential age limit of 70 and reset term limits, allowing Sassou Nguesso to seek additional five-year terms.</p>\n<p>Opposition parties, including the Rally for Democracy and Development (RDD), Movement of Republicans (MR), and People's Party (PAPE), formed the \"Alliance for Democratic Alternation in 2026\" in April 2023 to contest the election (<a href=\"https://www.africa-press.net/en/policy/congo-labour-party-nominates-sassou-nguesso-for-2026-elections\">Africa Press</a>). However, the opposition remains weakened by internal divisions, limited resources, and an uneven political playing field. Two prominent opposition candidates from the 2016 election\u2014Jean-Marie Michel Mokoko and Andr\u00e9 Okombi Salissa\u2014remain imprisoned. Sassou Nguesso has won every election since 2002, each marred by accusations of fraud and intimidation. International observers from the African Union and European Union have expressed interest in deploying technical assistance teams (<a href=\"https://thecongomail.com/brazzaville-ballot-2026-power-perception-stakes/\">The Congo Mail</a>).</p>\n<p><strong>Resolution Criteria:</strong></p>\n<p>This question will be resolved using official election results announced by the Republic of the Congo's Constitutional Court or reports from credible international news organizations (e.g., Reuters, AFP, France 24). In the event of a contested result, the question will resolve based on official results. The question resolves \u201cYes\u201d if Denis Sassou Nguesso is declared the winner of the 2026 presidential election, whether in the first round or in a runoff.</p>",
+    "resolution_criteria": "Resolves to the outcome of the question found at https://www.randforecastinginitiative.org/questions/1722.",
+    "binary_resolution": "YES",
+    "open_time": "2026-01-29T20:00:00+00:00",
+    "close_time": "2026-03-16T04:00:00+00:00",
+    "resolve_time": "2026-03-16T00:00:00+00:00",
+    "community_prediction_history": [],
+    "url": "https://www.randforecastinginitiative.org/questions/1722",
+    "source": "forecastbench-infer",
+    "volume": null,
+    "unique_bettors": null
+  },
+  {
+    "id": "forecastbench-metaculus-41343",
+    "title": "Will any NVIDIA GPUs better than the H200 be allowed to be exported to China before March 14, 2026?",
+    "background": "In October 2022, the US Department of Commerce enacted [export controls](https://en.wikipedia.org/wiki/United_States_New_Export_Controls_on_Advanced_Computing_and_Semiconductors_to_China) to limit the People's Republic of China's access to advanced computing chips and semiconductors, citing national security and foreign policy concerns. Initially, these rules were not aimed at restricting China's capacity to train large language models. However, they directly restricted the class of high-end GPUs that subsequently became central to generative AI, leading to an eventual shift in the controls' focus to encompass such issues.\n\nIn response to these restrictions, NVIDIA repeatedly designed China-specific variants of its chips that complied with the export controls. These initially included the A800 and H800 chips, which were later banned [after an update to the export regulations](https://www.reuters.com/technology/nvidia-may-be-forced-shift-out-some-countries-after-new-us-export-curbs-2023-10-17/), and then the H20, which was [only briefly restricted in early 2025](https://www.reuters.com/world/china/us-licenses-nvidia-export-chips-china-official-says-2025-08-08/). In late 2025, [reporting indicated](https://www.reuters.com/world/china/us-block-nvidias-sale-scaled-back-ai-chips-china-information-says-2025-11-07/) the US planned to block a new, highly capable China-specific chip referred to as B30A. Subsequently, however, President Trump announced, in a policy shift, that the US would permit [exports of the powerful H200 chip to China](https://www.reuters.com/world/china/nvidia-aims-begin-h200-chip-shipments-china-by-mid-february-sources-say-2025-12-22/), subject to a 25% fee.",
+    "resolution_criteria": "This question will resolve as **Yes** if, after January 12, 2026 and before March 14, 2026 ET, the US government publicly states that it will permit any Nvidia GPU that is better than the H200 to be exported to mainland China.\n\nThis question will also resolve as **Yes** if such GPUs are directly exported to mainland China, without [credible sources](https://www.metaculus.com/faq/#definitions) reporting that the export violated US export controls or that the US government is taking enforcement action relating to those exports, before March 14, 2026 ET.\n\nFor the purposes of this question, \"better than H200\" is defined as any GPU with both:\n\n* a peak FP8 Tensor Core throughput (including sparsity) higher than 4 petaFLOPS\n\nand\n\n* an HBM bandwidth of at least 4.8 TB/s.",
+    "binary_resolution": "NO",
+    "open_time": "2026-01-12T16:00:00+00:00",
+    "close_time": "2026-03-10T16:00:00+00:00",
+    "resolve_time": "2026-03-10T00:00:00+00:00",
+    "community_prediction_history": [],
+    "url": "https://www.metaculus.com/questions/41343",
+    "source": "forecastbench-metaculus",
+    "volume": null,
+    "unique_bettors": null
+  },
+  {
+    "id": "forecastbench-metaculus-40864",
+    "title": "Will NASA's Artemis II complete its mission successfully before 2027?",
+    "background": "[Artemis II](https://www.nasa.gov/mission/artemis-ii/) is NASA's attempt to return to the moon after over half a century. NASA [plans](https://www.nasa.gov/missions/artemis/nasas-first-flight-with-crew-important-step-on-long-term-return-to-the-moon-missions-to-mars/) to send 4 astronauts on a 10-day voyage around the moon, which will involve going approximately 4,700 miles (7,500 kilometers) beyond the far side of the moon. From that vantage point, the astronauts will be able to see moon with the earth in the background.&#x20;\n\nAn additional factor, beyond bringing humanity back to the moon, is a strong geopolitical rivalry [undercurrent](https://www.rand.org/pubs/commentary/2025/10/nasas-artemis-ii-mission-is-crucial-as-doubts-build.html) between the United States and China. China is targeting its own moon landing for \\~2030. Assuming Artemis II is successful, the [Artemis III ](https://www.nasa.gov/mission/artemis-iii/)mission is [planned](https://www.nasa.gov/missions/artemis/artemis-iii/) to land humans on the moon again in 2027, the first time since 1972's Apollo 17 mission.\n\nArtemis II consists of two main vehicles: [Orion](https://www.nasa.gov/humans-in-space/orion-spacecraft/) spacecraft that will carry the humans around the moon and the [Space Launch System](https://en.wikipedia.org/wiki/Space_Launch_System) (SLS) super-heavy launch [rocket](https://www.nasa.gov/humans-in-space/space-launch-system/) that will lift the Orion into space. The uncrewed Artemis I test mission, launched at the end of 2022, successfully [went](https://www.nasa.gov/humans-in-space/view-the-best-images-from-nasas-artemis-i-mission/) around the moon though [had](https://en.wikipedia.org/wiki/Artemis_I#Post-landing_analysis) some minor damage which caused delays in Artemis II.&#x20;\n\nOriginally [planned](https://en.wikipedia.org/wiki/Artemis_II#Launch_date) for 2019-2021, Artemis II was delayed until 2023, then September 2025, and then until April 2026. However, in March 2025, NASA [accelerated](https://www.americaspace.com/2025/03/22/nasa-accelerates-artemis-2-by-two-months/) the planned launch date to February 2026. As of December 5, 2025, NASA's official Artemis II mission page [said](https://www.nasa.gov/mission/artemis-ii/) \"No Later Than April 2026.\"",
+    "resolution_criteria": "This question will resolve as **Yes** if Artemis II achieves a closest-approach altitude \u226420,000 km above the lunar surface during the mission and returns to Earth with no loss of crew before January 1, 2027.",
+    "binary_resolution": "YES",
+    "open_time": "2025-12-19T20:00:00+00:00",
+    "close_time": "2027-01-01T00:00:00+00:00",
+    "resolve_time": "2026-04-10T00:00:00+00:00",
+    "community_prediction_history": [],
+    "url": "https://www.metaculus.com/questions/40864",
+    "source": "forecastbench-metaculus",
+    "volume": null,
+    "unique_bettors": null
+  }
+]

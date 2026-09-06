@@ -1,0 +1,74 @@
+\begin{thebibliography}{10}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Alur et~al.(2025)Alur, Stadie, Kang, Chen, McManus, Rickert, Lee,
+  Federici, Zhu, Fogerty, Williamson, Lozinski, Linsky, and
+  Sekhon]{alur2025aia}
+Alur, R., Stadie, B.~C., Kang, D., Chen, R., McManus, M., Rickert, M., Lee, T.,
+  Federici, M., Zhu, R., Fogerty, D., Williamson, H., Lozinski, N., Linsky, A.,
+  and Sekhon, J.~S.
+\newblock {AIA} forecaster: Technical report.
+\newblock Technical report, Bridgewater AIA Labs, 2025.
+\newblock arXiv:2511.07678.
+
+\bibitem[Halawi et~al.(2024)Halawi, Zhang, Yueh-Han, and
+  Steinhardt]{halawi2024approaching}
+Halawi, D., Zhang, F., Yueh-Han, C., and Steinhardt, J.
+\newblock Approaching human-level forecasting with language models.
+\newblock \emph{arXiv preprint arXiv:2402.18563}, 2024.
+
+\bibitem[Karger et~al.(2024)Karger, Bastani, Yueh-Han, Jacobs, Halawi, Zhang,
+  and Tetlock]{karger2024forecastbench}
+Karger, E., Bastani, H., Yueh-Han, C., Jacobs, Z., Halawi, D., Zhang, F., and
+  Tetlock, P.~E.
+\newblock {ForecastBench}: A dynamic benchmark of {AI} forecasting
+  capabilities.
+\newblock \emph{arXiv preprint arXiv:2409.19839}, 2024.
+
+\bibitem[Li et~al.(2026)Li, Wang, El~Lahib, Xia, and Pi]{li2026simulated}
+Li, Z., Wang, Y., El~Lahib, A., Xia, Y.-J., and Pi, X.
+\newblock Simulated ignorance fails: A systematic study of {LLM} behaviors on
+  forecasting problems before model knowledge cutoff.
+\newblock \emph{arXiv preprint arXiv:2601.13717}, 2026.
+
+\bibitem[Murphy(2026)]{murphy2026agentic}
+Murphy, K.
+\newblock Agentic forecasting using sequential bayesian updating of linguistic
+  beliefs.
+\newblock \emph{arXiv preprint arXiv:2604.18576}, 2026.
+
+\bibitem[Paleka et~al.(2025)Paleka, Goel, Geiping, and
+  Tram{\`e}r]{paleka2025pitfalls}
+Paleka, D., Goel, S., Geiping, J., and Tram{\`e}r, F.
+\newblock Pitfalls in evaluating language model forecasters.
+\newblock \emph{arXiv preprint arXiv:2506.00723}, 2025.
+
+\bibitem[Schoenegger et~al.(2024)Schoenegger, Tuminauskaite, Park, Bastos, and
+  Tetlock]{schoenegger2024wisdom}
+Schoenegger, P., Tuminauskaite, I., Park, P.~S., Bastos, R. V.~S., and Tetlock,
+  P.~E.
+\newblock Wisdom of the silicon crowd: {LLM} ensemble prediction capabilities
+  rival human crowd accuracy.
+\newblock \emph{Science Advances}, 10\penalty0 (45), 2024.
+
+\bibitem[Turtel et~al.(2025)Turtel, Franklin, and Schoenegger]{turtel2025teach}
+Turtel, B., Franklin, D., and Schoenegger, P.
+\newblock {LLMs} can teach themselves to better predict the future.
+\newblock \emph{arXiv preprint arXiv:2502.05253}, 2025.
+
+\bibitem[Yang et~al.(2025)Yang, Mahns, Li, Gu, Wu, and Xu]{yang2025prophet}
+Yang, Q., Mahns, S., Li, S., Gu, A., Wu, J., and Xu, H.
+\newblock {LLM}-as-a-prophet: Understanding predictive intelligence with
+  prophet arena.
+\newblock \emph{arXiv preprint arXiv:2510.17638}, 2025.
+
+\bibitem[Yuan et~al.(2025)Yuan, Ding, and Vlachos]{yuan2025assessing}
+Yuan, Z., Ding, Z., and Vlachos, A.
+\newblock Do language models update their forecasts with new information?
+\newblock \emph{arXiv preprint arXiv:2509.23936}, 2025.
+
+\end{thebibliography}

@@ -1,0 +1,83 @@
+{
+  "questions": [
+    {
+      "question_id": "manifold-i0gxu4hz50xefKXiKCI8",
+      "title": "Will the Scottish Labour Party be the second largest party in Holyrood after the next election?",
+      "y": 1.0,
+      "slope_opus_ladder": 0.026333333333333306,
+      "slope_gpt5_ladder": 0.11066666666666662
+    },
+    {
+      "question_id": "manifold-R0gcZ8NR8N",
+      "title": "Humans have consciousness [Convince the Machine #3]",
+      "y": 1.0,
+      "slope_opus_ladder": 0.0013333333333333582,
+      "slope_gpt5_ladder": 0.004999999999999856
+    },
+    {
+      "question_id": "manifold-ysQS6ZAd0q",
+      "title": "Will the Lakers advance past the first round of the 2026 NBA Playoffs?",
+      "y": 1.0,
+      "slope_opus_ladder": 0.040999999999999946,
+      "slope_gpt5_ladder": 0.05833333333333316
+    },
+    {
+      "question_id": "manifold-uIC5sUz6dR",
+      "title": "Will any current Labour MP call for Keir Starmer to stand down after the local elections?",
+      "y": 1.0,
+      "slope_opus_ladder": -0.027666666666666707,
+      "slope_gpt5_ladder": -0.05400000000000007
+    },
+    {
+      "question_id": "manifold-pCdqOngC6E",
+      "title": "Will Delcy Rodr\u00edguez still be President of Venezuela on May 4, 2026?",
+      "y": 1.0,
+      "slope_opus_ladder": 0.23700000000000004,
+      "slope_gpt5_ladder": 0.16400000000000003
+    },
+    {
+      "question_id": "manifold-ON0QU2RnOz",
+      "title": "Will Real Madrid win the 2025\u201326 UEFA Champions League?",
+      "y": 0.0,
+      "slope_opus_ladder": 0.007666666666666513,
+      "slope_gpt5_ladder": -0.002000000000000156
+    },
+    {
+      "question_id": "manifold-uNNEglu2sg",
+      "title": "Will Pete Hegseth be fired before 10 May, 2026?",
+      "y": 0.0,
+      "slope_opus_ladder": 0.01799999999999986,
+      "slope_gpt5_ladder": -0.02466666666666662
+    },
+    {
+      "question_id": "manifold-yq9hpgsgsU",
+      "title": "Will pro-independence parties win a majority of seats at the 2026 Welsh election?",
+      "y": 0.0,
+      "slope_opus_ladder": 0.010999999999999878,
+      "slope_gpt5_ladder": -0.0050000000000000044
+    },
+    {
+      "question_id": "manifold-yALnECq6z2",
+      "title": "Will Sora have ads two years after launch?",
+      "y": 0.0,
+      "slope_opus_ladder": 0.12300000000000003,
+      "slope_gpt5_ladder": 0.11733333333333336
+    },
+    {
+      "question_id": "manifold-5lCp68nI9Q",
+      "title": "Will the champions of Super Bowl LX visit the White House after their win?",
+      "y": 0.0,
+      "slope_opus_ladder": 0.04333333333333328,
+      "slope_gpt5_ladder": 0.16999999999999996
+    }
+  ],
+  "summary": {
+    "n_pairs": 10,
+    "mean_slope_opus_ladder": 0.04809999999999995,
+    "mean_slope_gpt5_ladder": 0.05396666666666661,
+    "mean_diff": -0.005866666666666664,
+    "paired_t_statistic": -0.31433227062787644,
+    "paired_t_p": 0.7604330796577146,
+    "wilcoxon_p": 0.845703125
+  }
+}
