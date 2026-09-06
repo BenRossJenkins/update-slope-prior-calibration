@@ -92,40 +92,50 @@ def main():
     ]
 
     # ---- 2. u-table (analyze.py conventions: slope fit on available levels >=2,
-    #         a0/Brier@L0 over questions with L0) ----
-    u_table = []
-    for m in models:
-        slopes, a0s = [], []
-        for q in truth:
-            pts = [(i, aligned_mean(orig, m, q, lvl)) for i, lvl in enumerate(LEVELS)]
-            pts = [(x, y) for x, y in pts if y is not None]
-            if len(pts) >= 2:
-                xs, ys = zip(*pts)
-                slopes.append(float(np.polyfit(xs, ys, 1)[0]))
-            a0 = aligned_mean(orig, m, q, "L0")
-            if a0 is not None:
-                a0s.append(a0)
-        a0 = float(np.mean(a0s))
-        H = 1.0 - a0
-        slope = float(np.mean(slopes))
-        brier0 = float(np.mean([(1 - a) ** 2 for a in a0s]))
-        u_table.append({"model": displays[m], "api_id": m, "a0": a0, "H": H,
-                        "slope": slope, "u": slope / (K3 * H),
-                        "brier_L0": brier0, "sqrt_brier_L0": float(np.sqrt(brier0)),
-                        "n_slope_questions": len(slopes), "n_L0_questions": len(a0s)})
-    us = np.array([r["u"] for r in u_table])
-    Hs = np.array([r["H"] for r in u_table])
-    sl = np.array([r["slope"] for r in u_table])
-    sb = np.array([r["sqrt_brier_L0"] for r in u_table])
-    mechanism = {
-        "u_mean": float(us.mean()), "u_sd": float(us.std(ddof=1)),
-        "u_min": float(us.min()), "u_max": float(us.max()),
-        "u_cv": float(us.std(ddof=1) / us.mean()),
-        "K3_times_u_mean": float(K3 * us.mean()),
-        "ols_slope_on_sqrt_brier_L0": float(np.polyfit(sb, sl, 1)[0]),
-        "ols_slope_on_H": float(np.polyfit(Hs, sl, 1)[0]),
-        "corr_u_H": float(np.corrcoef(us, Hs)[0, 1]),
-    }
+    #         a0/Brier@L0 over questions with L0), for both ladders ----
+    # ---- 2. u-table (both ladders) ----
+    def build_u(probs):
+        u_table = []
+        for m in models:
+            slopes, a0s = [], []
+            for q in truth:
+                pts = [(i, aligned_mean(probs, m, q, lvl)) for i, lvl in enumerate(LEVELS)]
+                pts = [(x, y) for x, y in pts if y is not None]
+                if len(pts) >= 2:
+                    xs, ys = zip(*pts)
+                    slopes.append(float(np.polyfit(xs, ys, 1)[0]))
+                a0 = aligned_mean(probs, m, q, "L0")
+                if a0 is not None:
+                    a0s.append(a0)
+            a0 = float(np.mean(a0s)); H = 1.0 - a0
+            slope = float(np.mean(slopes))
+            brier0 = float(np.mean([(1 - a) ** 2 for a in a0s]))
+            u_table.append({"model": displays[m], "api_id": m, "a0": a0, "H": H,
+                            "slope": slope, "u": slope / (K3 * H),
+                            "brier_L0": brier0, "sqrt_brier_L0": float(np.sqrt(brier0))})
+        us = np.array([r["u"] for r in u_table]); Hs = np.array([r["H"] for r in u_table])
+        sl = np.array([r["slope"] for r in u_table]); sb = np.array([r["sqrt_brier_L0"] for r in u_table])
+        mech = {"u_mean": float(us.mean()), "u_sd": float(us.std(ddof=1)),
+                "u_min": float(us.min()), "u_max": float(us.max()),
+                "u_cv": float(us.std(ddof=1) / us.mean()),
+                "K3_times_u_mean": float(K3 * us.mean()),
+                "ols_slope_on_sqrt_brier_L0": float(np.polyfit(sb, sl, 1)[0]),
+                "ols_slope_on_H": float(np.polyfit(Hs, sl, 1)[0]),
+                "corr_u_H": float(np.corrcoef(us, Hs)[0, 1])}
+        return u_table, mech
+
+    u_table, mechanism = build_u(orig)
+    u_table_blind, mechanism_blind = build_u(blind)
+
+    # aggregate aligned means per level, both ladders
+    def agg_levels(probs):
+        out = {}
+        for i, lvl in enumerate(LEVELS):
+            vals = [aligned_mean(probs, m, q, lvl) for m in models for q in truth]
+            vals = [v for v in vals if v is not None]
+            out[lvl] = float(np.mean(vals))
+        return out
+    agg = {"orig": agg_levels(orig), "blind": agg_levels(blind)}
 
     # ---- 3. hierarchical fits (hierarchical_clean.py spec) ----
     def frame(cdict, keys):
@@ -228,7 +238,9 @@ def main():
             "common": len(common), "orig_null_records": n_null_orig,
             "blind_null_records": n_null_blind, "incomplete_cells": incomplete,
         },
-        "u_table": u_table, "mechanism": mechanism, "hierarchical": hier,
+        "u_table": u_table, "mechanism": mechanism,
+        "u_table_blind": u_table_blind, "mechanism_blind": mechanism_blind,
+        "aggregate_aligned": agg, "hierarchical": hier,
         "monotonicity": mono, "brier_L3_full_precision": brier_l3,
         "comparators": comparators,
     }

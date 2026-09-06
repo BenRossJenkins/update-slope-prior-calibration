@@ -462,18 +462,35 @@ def main():
             out.append(rf"\def\{tex}SE{{{v['se']:.3f}}}")
             out.append(rf"\def\{tex}Lo{{{v['ci_lo']:.3f}}}")
             out.append(rf"\def\{tex}Hi{{{v['ci_hi']:.3f}}}")
-        mech = cr["mechanism"]
-        out.append(rf"\def\uMean{{{mech['u_mean']:.3f}}}")
-        out.append(rf"\def\uSd{{{mech['u_sd']:.3f}}}")
-        out.append(rf"\def\uMin{{{mech['u_min']:.3f}}}")
-        out.append(rf"\def\uMax{{{mech['u_max']:.3f}}}")
-        out.append(rf"\def\KthreeUMean{{{mech['K3_times_u_mean']:.3f}}}")
-        out.append(rf"\def\corrUH{{{mech['corr_u_H']:+.2f}}}")
+        def emit_mech(mech, suffix=""):
+            out.append(rf"\def\uMean{suffix}{{{mech['u_mean']:.3f}}}")
+            out.append(rf"\def\uSd{suffix}{{{mech['u_sd']:.3f}}}")
+            out.append(rf"\def\uMin{suffix}{{{mech['u_min']:.3f}}}")
+            out.append(rf"\def\uMax{suffix}{{{mech['u_max']:.3f}}}")
+            out.append(rf"\def\KthreeUMean{suffix}{{{mech['K3_times_u_mean']:.3f}}}")
+            out.append(rf"\def\corrUH{suffix}{{{mech['corr_u_H']:+.2f}}}")
+            out.append(rf"\def\couplingSqrtBrier{suffix}{{{mech['ols_slope_on_sqrt_brier_L0']:+.3f}}}")
+            out.append(rf"\def\couplingH{suffix}{{{mech['ols_slope_on_H']:+.3f}}}")
+        emit_mech(cr["mechanism"])
+        emit_mech(cr["mechanism_blind"], "Blind")
+
+        def emit_utable(tbl, macro):
+            rows = [f"{_short(r['model'])} & {r['a0']:.3f} & {r['H']:.3f} & "
+                    f"{r['slope']:.4f} & {r['u']:.3f} \\\\" for r in tbl]
+            out.append(rf"\def\{macro}{{" + "\n".join(rows) + r"}")
+        emit_utable(cr["u_table"], "uTableRows")
+        emit_utable(cr["u_table_blind"], "uTableRowsBlind")
+        # combined table: model, a0/slope/u for both ladders
+        by_model_blind = {r["model"]: r for r in cr["u_table_blind"]}
         rows = []
         for r in cr["u_table"]:
-            rows.append(f"{_short(r['model'])} & {r['a0']:.3f} & {r['H']:.3f} & "
-                        f"{r['slope']:.4f} & {r['u']:.3f} \\\\")
-        out.append(r"\def\uTableRows{" + "\n".join(rows) + r"}")
+            b = by_model_blind[r["model"]]
+            rows.append(f"{_short(r['model'])} & {r['a0']:.3f} & {r['slope']:.4f} & {r['u']:.3f} & "
+                        f"{b['slope']:.4f} & {b['u']:.3f} \\\\")
+        out.append(r"\def\uTableRowsBoth{" + "\n".join(rows) + r"}")
+        for tag, key in [("Orig", "orig"), ("Blind", "blind")]:
+            for lvl in ["L0", "L3"]:
+                out.append(rf"\def\agg{tag}{lvl.replace('L0','LZero').replace('L3','LThree')}{{{cr['aggregate_aligned'][key][lvl]:.3f}}}")
         mono = cr["monotonicity"]
         out.append(rf"\def\cellEpsMedian{{{mono['eps_median']:.3f}}}")
         out.append(rf"\def\cellEpsPninety{{{mono['eps_p90']:.3f}}}")
