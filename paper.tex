@@ -74,22 +74,22 @@ This paper argues that raw update slope is unreliable for two independent reason
 
 First, the slope is a \emph{change score}, and correlating change with its own baseline is a classical trap: mathematical coupling and regression to the mean can manufacture baseline--change associations without any underlying behavioral difference \citep{oldham1962note,blomqvist1977relation,tu2007revisiting}. In our setting the trap has a sharp finite-range form: because truth-aligned forecasts live in $[0,1]$, the ordinary-least-squares slope obeys a prior-dependent ceiling (\cref{prop:bound}). Crucially, the ceiling licenses only a \emph{feasible region}. Whether observed slopes actually correlate with prior calibration depends on how models use their available headroom, which is an empirical property of a particular panel on a particular pool; on our data it varies in sign across pools.
 
-Second, the evidence ladder itself can leak. If the ladder builder knows the resolution outcome, it can select and strengthen evidence toward the correct side without ever stating it, inflating measured slopes in a way that audits of explicit hindsight markers do not detect. Our primary experiments therefore use \emph{resolution-blinded} ladders, and the paired comparison against an earlier outcome-aware construction quantifies the inflation directly: aggregate panel movement from L0 to L3 drops from $+0.166$ to $+0.047$ when the builder cannot see the outcome, with per-model headroom utilization falling from $\uMean$ to $\uMeanBlind$ on the same models and questions.
+Second, the evidence ladder itself can leak. If the ladder builder knows the resolution outcome, it can select and strengthen evidence toward the correct side without ever stating it, inflating measured slopes in a way that audits of explicit hindsight markers do not detect. Our primary experiments therefore use \emph{resolution-blinded} ladders; the paired comparison against an earlier outcome-aware construction shows roughly fourfold slope inflation on the same models and questions (\cref{sec:leakage}).
 
-What survives both corrections is the paper's core inferential result: conditioning on prior calibration materially changes conclusions about updating skill. On blinded data, the association between an $a_3$-independent update measure and final Brier strengthens roughly threefold once Brier@L0 is controlled, replicating the outcome-aware result almost exactly.
+What survives both corrections is the paper's core inferential result: conditioning on prior calibration roughly triples the measured association between intermediate updating and final skill, nearly identically under both constructions (\cref{sec:hier}).
 
 Concretely, this paper contributes:
 \begin{itemize}
-  \item A tight structural bound on update slope in terms of prior miscalibration (\cref{prop:bound}), presented as a feasible-region result, together with a headroom-utilization decomposition $\bar\beta_m = K_3\,u_m\,H_m$ that separates what the theorem guarantees from what data must establish.
-  \item A diagnosis toolkit adapted from the classical change-score literature: Hake-style normalized gain \citep{hake1998interactive}, Oldham's method \citep{oldham1962note}, and a Blomqvist-style measurement-error correction \citep{blomqvist1977relation}, applied to LLM dose-response evaluation.
-  \item A blinded-ladder experimental design whose paired comparison with outcome-aware construction quantifies construction leakage (roughly $4\times$ slope inflation) while showing the prior-controlled hierarchical result is robust to it.
-  \item A cross-pool contingency map (Manifold, ForecastBench, ACLED): the algebraic bound and question-variance dominance replicate everywhere, while the slope--prior coupling varies in sign, motivating the prescription to condition on the prior and report utilization rather than raw slope.
+  \item A tight structural bound on update slope (\cref{prop:bound}), presented as a feasible-region result, with a utilization decomposition $\bar\beta_m = K_3\,u_m\,H_m$ separating what the theorem guarantees from what data must establish.
+  \item Classical change-score diagnostics, normalized gain \citep{hake1998interactive}, Oldham's method \citep{oldham1962note}, and a Blomqvist-style error correction \citep{blomqvist1977relation}, applied to LLM dose-response evaluation.
+  \item A blinded-ladder design whose paired comparison with outcome-aware construction quantifies the inflation while showing the prior-controlled result is robust to it.
+  \item A cross-pool contingency map (Manifold, ForecastBench, ACLED): the ceiling and question-variance dominance replicate everywhere while the slope--prior coupling varies in sign.
 \end{itemize}
 
 \section{Related Work}
 
 \paragraph{LLM forecasting and updating}
-Retrieval-augmented LLM forecasting pipelines \citep{halawi2024approaching} approach crowd performance on contemporary benchmarks \citep{schoenegger2024wisdom,alur2025aia}, while rigorous benchmarks show experts still ahead \citep{karger2024forecastbench} and evaluation itself is fragile to simulated-ignorance prompting, contamination, and gaming \citep{li2026simulated,paleka2025pitfalls}. Closest to us, Yuan et al.~\citep{yuan2025assessing} study how LLM forecasts respond to new information and find conservative, inconsistent updating; we show that the natural follow-on metric, the update slope, is not a stand-alone measure of updating skill.
+LLM forecasting pipelines approach crowd performance on contemporary benchmarks \citep{halawi2024approaching,schoenegger2024wisdom,alur2025aia}, though experts remain ahead on rigorous benchmarks \citep{karger2024forecastbench} and evaluation is fragile to simulated ignorance, contamination, and gaming \citep{li2026simulated,paleka2025pitfalls}. Closest to us, Yuan et al.~\citep{yuan2025assessing} find LLMs update conservatively and inconsistently; we show the natural follow-on metric, the update slope, is not a stand-alone measure of updating skill.
 
 \paragraph{Change scores and baseline coupling}
 The statistical core of our critique is old. Correlating change with initial value invites mathematical coupling and regression-to-the-mean artifacts; Oldham proposed testing change against the mean of initial and final values \citep{oldham1962note}, Blomqvist derived corrections for measurement error in the baseline \citep{blomqvist1977relation}, and the issue recurs across clinical and educational measurement \citep{tu2007revisiting}. Hake's normalized gain, change divided by maximum possible change, is the standard headroom-normalized effect size in education research \citep{hake1998interactive} and is the endpoint-based analogue of our slope-based utilization quantity $u_m$. Our contribution is to identify how this classical problem manifests in sequential-evidence LLM evaluation, derive the setting-specific finite-range ceiling, and evaluate prior-conditioned alternatives.
@@ -174,7 +174,7 @@ Of $280$ model--question cells, $\nCellsOrig$ are complete at all four levels in
   \centering
   \footnotesize
   \setlength{\tabcolsep}{4.5pt}
-  \caption{Per-model prior, slope, and headroom utilization $u_m = \bar\beta_m / (K_3 H_m)$ under both ladder constructions. The $\bar a_{m,0}$ column is from the outcome-aware run; blinded utilization uses the blinded run's own priors, which differ negligibly.}
+  \caption{Per-model prior, slope, and utilization $u_m = \bar\beta_m / (K_3 H_m)$ under both constructions ($\bar a_{m,0}$ from the outcome-aware run; blinded $u_m$ uses the blinded run's nearly identical priors).}
   \label{tab:utilization}
   \begin{tabular}{lccccc}
     \toprule
@@ -243,7 +243,7 @@ All rankings in this subsection use the outcome-aware panel, whose slopes carry 
   \centering
   \footnotesize
   \setlength{\tabcolsep}{4pt}
-  \caption{Cross-pool comparison (outcome-aware protocol; $n{=}7$ models, $n_q{=}40$ per pool). The bound and question-variance dominance replicate; the empirical slope--prior coupling does not.}
+  \caption{Cross-pool comparison (outcome-aware protocol; $n{=}7$ models, $n_q{=}40$ per pool).}
   \label{tab:cross-pool}
   \begin{tabular}{lccc}
     \toprule
@@ -267,7 +267,7 @@ Limitations. The panel is seven models and forty questions per pool; every cross
 
 \section{Conclusion}
 
-Raw update slope is doubly untrustworthy as a forecasting-evaluation metric: it is bounded by prior miscalibration, so cross-model comparisons partly measure how wrong models started, and it is inflated by outcome-aware evidence construction, a leakage mode invisible to content audits. The structural bound defines the feasible region; utilization behavior, not the theorem, determines whether a slope--prior coupling appears, and it varies across pools and constructions. What is robust is the correction: conditioning on prior calibration substantially strengthens the measured association between updating and final skill, identically under blinded and outcome-aware evidence. Evaluate updating the way the change-score literature learned to long ago: blind the instrument, condition on the baseline, and normalize by the room to move.
+Raw update slope is doubly untrustworthy as a forecasting-evaluation metric: it is bounded by prior miscalibration, so cross-model comparisons partly measure how wrong models started, and it is substantially inflated by outcome-aware evidence construction, an effect invisible to content audits. What is robust is the correction: conditioning on prior calibration substantially strengthens the measured association between updating and final skill, identically under blinded and outcome-aware evidence. Evaluate updating the way the change-score literature learned to long ago: blind the instrument, condition on the baseline, and normalize by the room to move.
 
 \section*{Acknowledgment}
 Generative AI tools were used under the authors' direction during portions of this work. Anthropic Claude was used in experiment execution and data analysis, and in the drafting and revision of all sections of the manuscript. OpenAI ChatGPT was used in review and revision of the Abstract, Introduction, and Discussion. All AI-generated manuscript content was reviewed, edited, and verified by the authors, who take responsibility for the final text and all scientific claims. Separately, evidence ladders were generated by and forecasts elicited from the LLMs named in \cref{sec:setup} as experimental subjects.
