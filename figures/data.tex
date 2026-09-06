@@ -75,13 +75,13 @@ o3 & Yes & 0.332 & 0.180 & 0.053 & 0.291 \\}
 \addplot+[only marks,reasoningmark] coordinates {(0.371,0.197)};
 \node[font=\tiny] at (axis cs:0.371,0.197) [anchor=north west,xshift=2pt,yshift=-2pt] {Opus 4.7};
 \addplot+[only marks,nonreasoningmark] coordinates {(0.334,0.186)};
-\node[font=\tiny] at (axis cs:0.334,0.186) [anchor=north west,xshift=2pt,yshift=-2pt] {Sonnet 4.6};
+\node[font=\tiny] at (axis cs:0.334,0.186) [anchor=south west,xshift=3pt,yshift=1pt] {Sonnet 4.6};
 \addplot+[only marks,nonreasoningmark] coordinates {(0.244,0.141)};
 \node[font=\tiny] at (axis cs:0.244,0.141) [anchor=north west,xshift=2pt,yshift=-2pt] {Haiku 4.5};
 \addplot+[only marks,reasoningmark] coordinates {(0.355,0.170)};
 \node[font=\tiny] at (axis cs:0.355,0.170) [anchor=north west,xshift=2pt,yshift=-2pt] {GPT-5};
 \addplot+[only marks,reasoningmark] coordinates {(0.332,0.180)};
-\node[font=\tiny] at (axis cs:0.332,0.180) [anchor=north west,xshift=2pt,yshift=-2pt] {o3};}
+\node[font=\tiny] at (axis cs:0.332,0.180) [anchor=north east,xshift=-3pt,yshift=-1pt] {o3};}
 \def\brierLoLthreeFit{(0.239,0.130) (0.376,0.187)}
 \def\BootSlopeBrierMean{-0.054}
 \def\BootSlopeBrierLo{-0.848}
@@ -192,3 +192,60 @@ Sonnet 4.6 & N & 0.186 & 0.079 & -0.034 \\}
 \def\resGainCoords{(5-mini,0.142) (4o,0.147) (Opus 4.7,0.074) (Sonnet 4.6,0.073) (Haiku 4.5,0.108) (GPT-5,0.115) (o3,0.111)}
 \def\modelSymbolList{5-mini,4o,Opus,Sonnet,Haiku,GPT-5,o3}
 \def\modelTickLabels{5-mini,4o,Opus 4.7,Sonnet 4.6,Haiku 4.5,GPT-5,o3}
+% ---- camera-ready analysis (camera_ready_analysis.py) ----
+\def\nCellsOrig{268}
+\def\nCellsBlind{280}
+\def\nCellsIncomplete{12}
+\def\nNullRecords{181}
+\def\crOrigNaiveBeta{-0.531}
+\def\crOrigNaiveSE{0.117}
+\def\crOrigNaiveLo{-0.760}
+\def\crOrigNaiveHi{-0.302}
+\def\crOrigCtrlBeta{-1.781}
+\def\crOrigCtrlSE{0.082}
+\def\crOrigCtrlLo{-1.942}
+\def\crOrigCtrlHi{-1.620}
+\def\crBlindNaiveBeta{-0.506}
+\def\crBlindNaiveSE{0.142}
+\def\crBlindNaiveLo{-0.785}
+\def\crBlindNaiveHi{-0.227}
+\def\crBlindCtrlBeta{-1.655}
+\def\crBlindCtrlSE{0.074}
+\def\crBlindCtrlLo{-1.801}
+\def\crBlindCtrlHi{-1.510}
+\def\crBlindCommonBeta{-1.654}
+\def\crBlindCommonSE{0.085}
+\def\crBlindCommonLo{-1.820}
+\def\crBlindCommonHi{-1.487}
+\def\crOrigSlopeTwelveBeta{-0.638}
+\def\crOrigSlopeTwelveSE{0.022}
+\def\crOrigSlopeTwelveLo{-0.681}
+\def\crOrigSlopeTwelveHi{-0.595}
+\def\crBlindSlopeTwelveBeta{-0.601}
+\def\crBlindSlopeTwelveSE{0.047}
+\def\crBlindSlopeTwelveLo{-0.694}
+\def\crBlindSlopeTwelveHi{-0.509}
+\def\uMean{0.338}
+\def\uSd{0.055}
+\def\uMin{0.271}
+\def\uMax{0.412}
+\def\KthreeUMean{0.135}
+\def\corrUH{+0.27}
+\def\uTableRows{Haiku 4.5 & 0.577 & 0.423 & 0.0489 & 0.289 \\
+Opus 4.7 & 0.510 & 0.490 & 0.0583 & 0.298 \\
+Sonnet 4.6 & 0.523 & 0.477 & 0.0787 & 0.412 \\
+GPT-4o & 0.533 & 0.467 & 0.0655 & 0.351 \\
+GPT-5 & 0.500 & 0.500 & 0.0690 & 0.345 \\
+GPT-5 mini & 0.502 & 0.498 & 0.0799 & 0.402 \\
+o3 & 0.507 & 0.493 & 0.0534 & 0.271 \\}
+\def\cellEpsMedian{0.023}
+\def\cellEpsPninety{0.192}
+\def\cellEpsMax{0.843}
+\def\fracMonoCells{34}
+\def\corrChangeBaseline{-0.55}
+\def\corrChangeOldham{-0.02}
+\def\blomqvistObs{-0.582}
+\def\blomqvistCorr{-0.564}
+\def\sigmaRatioPct{4.1}
+\def\brierLThreeGptFourOFull{0.140553}
+\def\brierLThreeHaikuFull{0.140631}

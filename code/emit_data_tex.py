@@ -195,10 +195,16 @@ def main():
         bl_pts.append(
             f"\\addplot+[only marks,{c}] coordinates {{({_f(x)},{_f(y)})}};"
         )
+        # Per-model label placement overrides (avoids overlap; matches the
+        # hand-tuned camera-ready figure).
+        _anchor = {
+            "Sonnet 4.6": "anchor=south west,xshift=3pt,yshift=1pt",
+            "o3": "anchor=north east,xshift=-3pt,yshift=-1pt",
+        }.get(_short(m.get("display", api_id)), "anchor=north west,xshift=2pt,yshift=-2pt")
         bl_pts.append(
             r"\node[font=\tiny] at (axis cs:"
             f"{_f(x)},{_f(y)}"
-            r") [anchor=north west,xshift=2pt,yshift=-2pt] {"
+            f") [{_anchor}] {{"
             f"{_short(m.get('display', api_id))}" + r"};"
         )
     out.append(r"\def\brierLoLthreePlots{" + "\n".join(bl_pts) + r"}")
@@ -434,6 +440,54 @@ def main():
     tick_labels = ",".join(_shorten.get(_short(m.get("display", api_id)), _short(m.get("display", api_id)))
                            for api_id, m in pm_meta_all.items())
     out.append(rf"\def\modelTickLabels{{{tick_labels}}}")
+
+    # ---- Camera-ready block (from camera_ready_analysis.py) ----
+    cr_path = Path(RESULTS).parent / "camera_ready.json"
+    if cr_path.exists():
+        cr = json.loads(cr_path.read_text())
+        out.append("% ---- camera-ready analysis (camera_ready_analysis.py) ----")
+        c = cr["cells"]
+        out.append(rf"\def\nCellsOrig{{{c['orig_complete']}}}")
+        out.append(rf"\def\nCellsBlind{{{c['blind_complete']}}}")
+        out.append(rf"\def\nCellsIncomplete{{{c['total'] - c['orig_complete']}}}")
+        out.append(rf"\def\nNullRecords{{{c['orig_null_records']}}}")
+        h = cr["hierarchical"]
+        for key, tex in [("orig_naive", "crOrigNaive"), ("orig_ctrl", "crOrigCtrl"),
+                         ("blind_naive", "crBlindNaive"), ("blind_ctrl", "crBlindCtrl"),
+                         ("blind_ctrl_common268", "crBlindCommon"),
+                         ("orig_ctrl_slope12", "crOrigSlopeTwelve"),
+                         ("blind_ctrl_slope12", "crBlindSlopeTwelve")]:
+            v = h[key]
+            out.append(rf"\def\{tex}Beta{{{v['coef']:.3f}}}")
+            out.append(rf"\def\{tex}SE{{{v['se']:.3f}}}")
+            out.append(rf"\def\{tex}Lo{{{v['ci_lo']:.3f}}}")
+            out.append(rf"\def\{tex}Hi{{{v['ci_hi']:.3f}}}")
+        mech = cr["mechanism"]
+        out.append(rf"\def\uMean{{{mech['u_mean']:.3f}}}")
+        out.append(rf"\def\uSd{{{mech['u_sd']:.3f}}}")
+        out.append(rf"\def\uMin{{{mech['u_min']:.3f}}}")
+        out.append(rf"\def\uMax{{{mech['u_max']:.3f}}}")
+        out.append(rf"\def\KthreeUMean{{{mech['K3_times_u_mean']:.3f}}}")
+        out.append(rf"\def\corrUH{{{mech['corr_u_H']:+.2f}}}")
+        rows = []
+        for r in cr["u_table"]:
+            rows.append(f"{_short(r['model'])} & {r['a0']:.3f} & {r['H']:.3f} & "
+                        f"{r['slope']:.4f} & {r['u']:.3f} \\\\")
+        out.append(r"\def\uTableRows{" + "\n".join(rows) + r"}")
+        mono = cr["monotonicity"]
+        out.append(rf"\def\cellEpsMedian{{{mono['eps_median']:.3f}}}")
+        out.append(rf"\def\cellEpsPninety{{{mono['eps_p90']:.3f}}}")
+        out.append(rf"\def\cellEpsMax{{{mono['eps_max']:.3f}}}")
+        out.append(rf"\def\fracMonoCells{{{100*mono['frac_weakly_monotone']:.0f}}}")
+        comp = cr["comparators"]
+        out.append(rf"\def\corrChangeBaseline{{{comp['corr_change_baseline']:+.2f}}}")
+        out.append(rf"\def\corrChangeOldham{{{comp['corr_change_oldham_mean']:+.2f}}}")
+        out.append(rf"\def\blomqvistObs{{{comp['slope_change_on_baseline_obs']:+.3f}}}")
+        out.append(rf"\def\blomqvistCorr{{{comp['blomqvist_corrected_slope']:+.3f}}}")
+        out.append(rf"\def\sigmaRatioPct{{{100*comp['measurement_var_sigma_e2']/comp['baseline_var_S2']:.1f}}}")
+        b3 = cr["brier_L3_full_precision"]
+        out.append(rf"\def\brierLThreeGptFourOFull{{{b3['GPT-4o']:.6f}}}")
+        out.append(rf"\def\brierLThreeHaikuFull{{{b3['Claude Haiku 4.5']:.6f}}}")
 
     FIGS.mkdir(exist_ok=True)
     (FIGS / "data.tex").write_text("\n".join(out) + "\n")

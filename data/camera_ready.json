@@ -1,0 +1,363 @@
+{
+ "cells": {
+  "total": 280,
+  "orig_complete": 268,
+  "blind_complete": 280,
+  "common": 268,
+  "orig_null_records": 181,
+  "blind_null_records": 4,
+  "incomplete_cells": [
+   {
+    "model": "Claude Haiku 4.5",
+    "question": "manifold-ls6EO5N6qP",
+    "valid_samples": {
+     "L0": 0,
+     "L1": 3,
+     "L2": 3,
+     "L3": 3
+    }
+   },
+   {
+    "model": "Claude Haiku 4.5",
+    "question": "manifold-6hOhzCnt5d",
+    "valid_samples": {
+     "L0": 2,
+     "L1": 0,
+     "L2": 3,
+     "L3": 3
+    }
+   },
+   {
+    "model": "Claude Haiku 4.5",
+    "question": "manifold-S9ynE25Uz0",
+    "valid_samples": {
+     "L0": 0,
+     "L1": 2,
+     "L2": 3,
+     "L3": 3
+    }
+   },
+   {
+    "model": "Claude Haiku 4.5",
+    "question": "manifold-UIz8PINcCZ",
+    "valid_samples": {
+     "L0": 1,
+     "L1": 0,
+     "L2": 3,
+     "L3": 3
+    }
+   },
+   {
+    "model": "Claude Haiku 4.5",
+    "question": "manifold-d6d6zngPcZ",
+    "valid_samples": {
+     "L0": 1,
+     "L1": 0,
+     "L2": 2,
+     "L3": 3
+    }
+   },
+   {
+    "model": "Claude Haiku 4.5",
+    "question": "manifold-zy0q2pUtpZ",
+    "valid_samples": {
+     "L0": 1,
+     "L1": 0,
+     "L2": 3,
+     "L3": 3
+    }
+   },
+   {
+    "model": "Claude Sonnet 4.6",
+    "question": "manifold-i0gxu4hz50xefKXiKCI8",
+    "valid_samples": {
+     "L0": 0,
+     "L1": 3,
+     "L2": 3,
+     "L3": 3
+    }
+   },
+   {
+    "model": "Claude Sonnet 4.6",
+    "question": "manifold-0q0RRPtScc",
+    "valid_samples": {
+     "L0": 0,
+     "L1": 3,
+     "L2": 3,
+     "L3": 3
+    }
+   },
+   {
+    "model": "Claude Sonnet 4.6",
+    "question": "manifold-S9ynE25Uz0",
+    "valid_samples": {
+     "L0": 0,
+     "L1": 3,
+     "L2": 3,
+     "L3": 3
+    }
+   },
+   {
+    "model": "Claude Sonnet 4.6",
+    "question": "manifold-d6d6zngPcZ",
+    "valid_samples": {
+     "L0": 3,
+     "L1": 0,
+     "L2": 3,
+     "L3": 3
+    }
+   },
+   {
+    "model": "Claude Sonnet 4.6",
+    "question": "manifold-ANPq9ycqRy",
+    "valid_samples": {
+     "L0": 0,
+     "L1": 1,
+     "L2": 3,
+     "L3": 3
+    }
+   },
+   {
+    "model": "Claude Sonnet 4.6",
+    "question": "manifold-AUL25Ofe9fecD71xnVRw",
+    "valid_samples": {
+     "L0": 0,
+     "L1": 0,
+     "L2": 1,
+     "L3": 3
+    }
+   }
+  ]
+ },
+ "u_table": [
+  {
+   "model": "Claude Haiku 4.5",
+   "api_id": "claude-haiku-4-5-20251001",
+   "a0": 0.5765350877192983,
+   "H": 0.4234649122807017,
+   "slope": 0.04888749999999995,
+   "u": 0.28861600207146526,
+   "brier_L0": 0.24379583333333335,
+   "sqrt_brier_L0": 0.49375685649247786,
+   "n_slope_questions": 40,
+   "n_L0_questions": 38
+  },
+  {
+   "model": "Claude Opus 4.7",
+   "api_id": "claude-opus-4-7",
+   "a0": 0.5100833333333333,
+   "H": 0.48991666666666667,
+   "slope": 0.05834166666666661,
+   "u": 0.2977121959516922,
+   "brier_L0": 0.37128138888888884,
+   "sqrt_brier_L0": 0.6093286378374881,
+   "n_slope_questions": 40,
+   "n_L0_questions": 40
+  },
+  {
+   "model": "Claude Sonnet 4.6",
+   "api_id": "claude-sonnet-4-6",
+   "a0": 0.5226190476190476,
+   "H": 0.47738095238095235,
+   "slope": 0.07871845238095229,
+   "u": 0.4122412718204484,
+   "brier_L0": 0.33410071428571425,
+   "sqrt_brier_L0": 0.5780144585438276,
+   "n_slope_questions": 40,
+   "n_L0_questions": 35
+  },
+  {
+   "model": "GPT-4o",
+   "api_id": "gpt-4o-2024-11-20",
+   "a0": 0.5333333333333333,
+   "H": 0.4666666666666667,
+   "slope": 0.06550833333333327,
+   "u": 0.3509374999999996,
+   "brier_L0": 0.290275,
+   "sqrt_brier_L0": 0.5387717513010496,
+   "n_slope_questions": 40,
+   "n_L0_questions": 40
+  },
+  {
+   "model": "GPT-5",
+   "api_id": "gpt-5",
+   "a0": 0.49991666666666673,
+   "H": 0.5000833333333332,
+   "slope": 0.06899166666666659,
+   "u": 0.3449008498583566,
+   "brier_L0": 0.3546147222222222,
+   "sqrt_brier_L0": 0.5954953586907477,
+   "n_slope_questions": 40,
+   "n_L0_questions": 40
+  },
+  {
+   "model": "GPT-5 mini",
+   "api_id": "gpt-5-mini",
+   "a0": 0.5024166666666667,
+   "H": 0.49758333333333327,
+   "slope": 0.07991666666666661,
+   "u": 0.4015240328253221,
+   "brier_L0": 0.33345416666666666,
+   "sqrt_brier_L0": 0.5774549044442057,
+   "n_slope_questions": 40,
+   "n_L0_questions": 40
+  },
+  {
+   "model": "o3",
+   "api_id": "o3",
+   "a0": 0.5066666666666666,
+   "H": 0.4933333333333334,
+   "slope": 0.053433333333333256,
+   "u": 0.2707770270270266,
+   "brier_L0": 0.3323633333333333,
+   "sqrt_brier_L0": 0.5765096125246597,
+   "n_slope_questions": 40,
+   "n_L0_questions": 40
+  }
+ ],
+ "mechanism": {
+  "u_mean": 0.3381012685077587,
+  "u_sd": 0.055291368430522556,
+  "u_min": 0.2707770270270266,
+  "u_max": 0.4122412718204484,
+  "u_cv": 0.16353493340784003,
+  "K3_times_u_mean": 0.13524050740310348,
+  "ols_slope_on_sqrt_brier_L0": 0.13149740027518275,
+  "ols_slope_on_H": 0.22720585266162596,
+  "corr_u_H": 0.2670881290815609
+ },
+ "hierarchical": {
+  "orig_naive": {
+   "coef": -0.5312379325041466,
+   "se": 0.1168811882909301,
+   "ci_lo": -0.7603208520246143,
+   "ci_hi": -0.30215501298367897,
+   "n": 268
+  },
+  "orig_ctrl": {
+   "coef": -1.7813921640310413,
+   "se": 0.08218465203585806,
+   "ci_lo": -1.9424711221032795,
+   "ci_hi": -1.620313205958803,
+   "n": 268
+  },
+  "blind_naive": {
+   "coef": -0.5059195320963342,
+   "se": 0.1422375000264806,
+   "ci_lo": -0.7846999093992513,
+   "ci_hi": -0.22713915479341723,
+   "n": 280
+  },
+  "blind_ctrl": {
+   "coef": -1.655315941986517,
+   "se": 0.07419974096613298,
+   "ci_lo": -1.800744761942339,
+   "ci_hi": -1.5098871220306953,
+   "n": 280
+  },
+  "blind_ctrl_common268": {
+   "coef": -1.6537058915821465,
+   "se": 0.08497698693888385,
+   "ci_lo": -1.8202577254970895,
+   "ci_hi": -1.4871540576672035,
+   "n": 268
+  },
+  "orig_ctrl_slope12": {
+   "coef": -0.6382575995768679,
+   "se": 0.02203169772573181,
+   "ci_lo": -0.6814389336375752,
+   "ci_hi": -0.5950762655161606,
+   "n": 268
+  },
+  "blind_ctrl_slope12": {
+   "coef": -0.6012676948535202,
+   "se": 0.047269760507650915,
+   "ci_lo": -0.6939147230063497,
+   "ci_hi": -0.5086206667006906,
+   "n": 280
+  }
+ },
+ "monotonicity": {
+  "n_cells": 268,
+  "frac_weakly_monotone": 0.3358208955223881,
+  "eps_median": 0.023333333333333373,
+  "eps_mean": 0.06774875621890547,
+  "eps_p90": 0.19200000000000003,
+  "eps_max": 0.8433333333333334
+ },
+ "brier_L3_full_precision": {
+  "Claude Haiku 4.5": 0.14063055555555554,
+  "Claude Opus 4.7": 0.19714277777777775,
+  "Claude Sonnet 4.6": 0.18613194444444442,
+  "GPT-4o": 0.14055277777777778,
+  "GPT-5": 0.1704163888888889,
+  "GPT-5 mini": 0.13939527777777777,
+  "o3": 0.17981388888888888
+ },
+ "comparators": {
+  "per_model": [
+   {
+    "model": "Claude Haiku 4.5",
+    "a0": 0.5765350877192983,
+    "a3": 0.7090350877192982,
+    "change": 0.13249999999999995,
+    "hake_gain": 0.31289487312273423,
+    "se2_a0_mean": 4.107225300092336e-05
+   },
+   {
+    "model": "Claude Opus 4.7",
+    "a0": 0.5100833333333333,
+    "a3": 0.6645,
+    "change": 0.15441666666666665,
+    "hake_gain": 0.3151896581051199,
+    "se2_a0_mean": 1.534722222222222e-06
+   },
+   {
+    "model": "Claude Sonnet 4.6",
+    "a0": 0.5226190476190476,
+    "a3": 0.7039047619047619,
+    "change": 0.18128571428571427,
+    "hake_gain": 0.3797506234413965,
+    "se2_a0_mean": 2.312244897959183e-05
+   },
+   {
+    "model": "GPT-4o",
+    "a0": 0.5333333333333333,
+    "a3": 0.7088333333333333,
+    "change": 0.1755,
+    "hake_gain": 0.37607142857142856,
+    "se2_a0_mean": 1.210416666666667e-05
+   },
+   {
+    "model": "GPT-5",
+    "a0": 0.49991666666666673,
+    "a3": 0.6790833333333334,
+    "change": 0.17916666666666664,
+    "hake_gain": 0.3582736210631562,
+    "se2_a0_mean": 4.068055555555555e-05
+   },
+   {
+    "model": "GPT-5 mini",
+    "a0": 0.5024166666666667,
+    "a3": 0.7204166666666667,
+    "change": 0.21799999999999997,
+    "hake_gain": 0.43811756824652487,
+    "se2_a0_mean": 5.141666666666666e-05
+   },
+   {
+    "model": "o3",
+    "a0": 0.5066666666666666,
+    "a3": 0.6503333333333334,
+    "change": 0.14366666666666683,
+    "hake_gain": 0.2912162162162165,
+    "se2_a0_mean": 3.60625e-05
+   }
+  ],
+  "corr_change_baseline": -0.5490044348582498,
+  "corr_change_oldham_mean": -0.02300058142319703,
+  "slope_change_on_baseline_obs": -0.5816976651400736,
+  "baseline_var_S2": 0.0007250598446079397,
+  "measurement_var_sigma_e2": 2.942761615594661e-05,
+  "blomqvist_corrected_slope": -0.5640020494915763
+ }
+}
